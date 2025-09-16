@@ -15,8 +15,8 @@ const port = process.env.PORT || 3001;
 const db = knex(knexConfig[process.env.NODE_ENV || 'development']);
 
 // Middleware
-// app.use(cors());
-// app.use(express.json());
+app.use(cors());
+app.use(express.json());
 
 // Serve static files (audio and images)
 // console.log('process.env.AUDIO_ASSETS_DIR:', process.env.AUDIO_ASSETS_DIR);
