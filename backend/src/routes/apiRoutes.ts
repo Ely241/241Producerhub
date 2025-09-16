@@ -102,14 +102,14 @@ router.get('/beats', validate(beatsQuerySchema), async (req, res, next) => {
   }
 });
 //
-// router.get('/genres', async (req, res, next) => {
-//   try {
-//     const genres = await db<Beat>('beats').distinct('genre').whereNotNull('genre');
-//     res.json(genres.map(g => g.genre).filter(g => g && g.trim() !== ''));
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+router.get('/genres', async (req, res, next) => {
+  try {
+    const genres = await db<Beat>('beats').distinct('genre').whereNotNull('genre');
+    res.json(genres.map(g => g.genre).filter(g => g && g.trim() !== ''));
+  } catch (err) {
+    next(err);
+  }
+});
 //
 // router.get('/beats/:id', async (req, res, next) => {
 //   try {
