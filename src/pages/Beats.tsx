@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { useAudio } from '@/context/use-audio'; // Import useAudio hook
+import API_BASE_URL from '@/lib/api-client';
 
 // Custom hook for debouncing
 function useDebounce<T>(value: T, delay: number): T {
@@ -30,7 +31,7 @@ const fetchBeats = async (query: string, genre: string, page: number, limit: num
   if (genre) params.append('genre', genre);
   params.append('page', page.toString());
   params.append('limit', limit.toString());
-  const res = await fetch(`/api/beats?${params.toString()}`);
+  const res = await fetch(`${API_BASE_URL}/api/beats?${params.toString()}`);
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
@@ -38,7 +39,7 @@ const fetchBeats = async (query: string, genre: string, page: number, limit: num
 };
 
 const fetchGenres = async (): Promise<string[]> => {
-    const res = await fetch(`/api/genres`);
+    const res = await fetch(`${API_BASE_URL}/api/genres`);
     if (!res.ok) {
       throw new Error('Network response was not ok');
     }
@@ -67,8 +68,8 @@ const Beats = () => {
     if (data?.beats) {
       const playlist = data.beats.map(beat => ({
         ...beat,
-        audioSrc: `${import.meta.env.VITE_API_URL}${beat.audio_file_url}`,
-        imageSrc: `${import.meta.env.VITE_API_URL}${beat.cover_image_url}`,
+        audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
+        imageSrc: `${API_BASE_URL}${beat.cover_image_url}`,
       }));
       playPlaylist(playlist, startIndex);
     }
@@ -147,7 +148,7 @@ const Beats = () => {
                     duration={beat.duration || 'N/A'}
                     price={beat.price ? beat.price.toFixed(2) : 'Écoute seule'}
                     tags={beat.tags || []}
-                    imageSrc={`${import.meta.env.VITE_API_URL}${beat.cover_image_url}`}
+                    imageSrc={`${API_BASE_URL}${beat.cover_image_url}`}
                     author={beat.author || 'Inconnu'}
                     likes={beat.likes || 0}
                     onPlay={() => handlePlay(index)} // Pass the handler to the card

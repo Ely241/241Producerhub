@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
 import ParticleBackground from '../components/layout/ParticleBackground'; // Import ParticleBackground
+import API_BASE_URL from '../lib/api-client';
 
 interface ProgressData {
   current_clicks: number;
@@ -20,7 +21,7 @@ const ClickBarLandingPage: React.FC<ClickBarLandingPageProps> = ({ onCompletion 
   useEffect(() => {
     const fetchProgress = async () => {
       try {
-        const response = await fetch('/api/progress');
+        const response = await fetch(`${API_BASE_URL}/api/progress`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -46,7 +47,7 @@ const ClickBarLandingPage: React.FC<ClickBarLandingPageProps> = ({ onCompletion 
     if (progress && progress.is_completed) return; // Prevent clicks if already completed
 
     try {
-      const response = await fetch('/api/click', {
+      const response = await fetch(`${API_BASE_URL}/api/click`, {
         method: 'POST',
       });
       if (!response.ok) {

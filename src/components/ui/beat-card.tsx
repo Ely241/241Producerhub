@@ -5,6 +5,7 @@ import { PlayCircle, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import API_BASE_URL from '@/lib/api-client';
 
 interface BeatCardProps {
   id: number;
@@ -35,7 +36,7 @@ const BeatCard = (beat: BeatCardProps) => {
   }, [id]);
 
   const likeMutation = useMutation({
-    mutationFn: () => fetch(`/api/beats/${id}/like`, { method: 'POST' }),
+    mutationFn: () => fetch(`${API_BASE_URL}/api/beats/${id}/like`, { method: 'POST' }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['beats'] });
     },

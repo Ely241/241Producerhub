@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAudio } from '@/context/use-audio';
 import type { Beat } from '@shared/types';
 import { useQuery } from '@tanstack/react-query';
-import { cn } from '@/lib/utils';
+import API_BASE_URL from '@/lib/api-client';
 
 
 
@@ -23,7 +23,7 @@ const oneYearsAgoProject = {
 
 const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.beats): Promise<Beat[]> => {
   const beatTitles = projectBeatsConfig.map(b => b.title);
-  const res = await fetch(`/api/beats?limit=100`); 
+  const res = await fetch(`${API_BASE_URL}/api/beats?limit=100`); 
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
@@ -51,7 +51,7 @@ const Home = () => {
     if (projectBeats && projectBeats.length > 0) {
       const playlist = projectBeats.map(beat => ({
         ...beat,
-        audioSrc: `${import.meta.env.VITE_API_URL}${beat.audio_file_url}`,
+        audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
         imageSrc: beat.imageSrc || beat.cover_image_url, // Use the merged imageSrc
       }));
       playPlaylist(playlist, 0); // Play from the first track

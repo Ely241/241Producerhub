@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, PlayCircle, Loader } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import API_BASE_URL from '@/lib/api-client';
 
 interface ProjectData {
   id: string;
@@ -36,7 +36,7 @@ const projectsData: ProjectData[] = [
 
 // Function to fetch all beats needed for all projects
 const fetchAllProjectBeats = async (allBeatTitles: string[]): Promise<Beat[]> => {
-  const res = await fetch(`/api/beats?limit=100`); 
+  const res = await fetch(`${API_BASE_URL}/api/beats?limit=100`); 
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
@@ -71,8 +71,8 @@ const Projects = () => {
     if (beatsToPlay) {
       const playlist = beatsToPlay.map(beat => ({
         ...beat,
-        audioSrc: `${import.meta.env.VITE_API_URL}${beat.audio_file_url}`,
-        imageSrc: `${import.meta.env.VITE_API_URL}${beat.cover_image_url}`,
+        audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
+        imageSrc: `${API_BASE_URL}${beat.cover_image_url}`,
       }));
       playPlaylist(playlist, startIndex);
     }
@@ -158,10 +158,9 @@ const Projects = () => {
                     genre={beat.genre || 'N/A'}
                     bpm={beat.bpm || 0}
                     duration={beat.duration || 'N/A'}
-                    audioSrc={`${import.meta.env.VITE_API_URL}${beat.audio_file_url}`}
                     price={beat.price ? beat.price.toFixed(2) : 'Écoute seule'}
                     tags={beat.tags || []}
-                    imageSrc={`${import.meta.env.VITE_API_URL}${beat.cover_image_url}`}
+                    imageSrc={`${API_BASE_URL}${beat.cover_image_url}`}
                     author={beat.author || 'Inconnu'}
                     likes={beat.likes || 0}
                     onPlay={() => handlePlay(projectBeats, index)}
@@ -231,3 +230,4 @@ const Projects = () => {
 };
 
 export default Projects;
+
