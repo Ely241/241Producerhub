@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 241 PRODUCER Design System - Rock/Metal Theme with Red & Black */
+
+@layer base {
+  :root {
+    /* Core Brand Colors - Rock/Metal Theme */
+    --background: 0 0% 6%;
+    --foreground: 0 0% 95%;
+
+    /* Card Components */
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 90%;
+
+    /* Popover Components */
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 90%;
+
+    /* Primary - Fire Red */
+    --primary: 0 85% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 0 90% 60%;
+
+    /* Secondary - Dark Charcoal */
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 85%;
+
+    /* Muted - Dark Gray */
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+
+    /* Accent - Blood Red */
+    --accent: 0 75% 35%;
+    --accent-foreground: 0 0% 95%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & Inputs */
+    --border: 0 0% 20%;
+    --input: 0 0% 12%;
+    --ring: 0 85% 50%;
+
+    /* Metal Gradients */
+    --gradient-fire: linear-gradient(135deg, hsl(0, 85%, 50%), hsl(15, 90%, 55%));
+    --gradient-dark: linear-gradient(180deg, hsl(0, 0%, 8%), hsl(0, 0%, 4%));
+    --gradient-glow: linear-gradient(90deg, transparent, hsl(0, 85%, 50% / 0.3), transparent);
+
+    /* Metal Shadows & Effects */
+    --shadow-glow: 0 0 30px hsl(0, 85%, 50% / 0.5);
+    --shadow-red: 0 10px 30px -10px hsl(0, 85%, 50% / 0.3);
+    --shadow-dark: 0 20px 40px -15px hsl(0, 0%, 0% / 0.8);
+
+    /* Typography */
+    --font-metal: 'Metal Mania', cursive;
+    --font-body: 'Inter', sans-serif;
+
+    /* Animations */
+    --transition-glow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --animation-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Same as root - we default to dark theme */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-metal);
+  }
+}
+
+@layer components {
+  /* Metal Glow Effects */
+  .glow-red {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px hsl(0, 85%, 50% / 0.8);
+  }
+
+  .metal-border {
+    border: 2px solid;
+    border-image: var(--gradient-fire) 1;
+  }
+
+  /* Animation Classes */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse-glow {
+    from {
+      box-shadow: 0 0 20px hsl(0, 85%, 50% / 0.4);
+    }
+    to {
+      box-shadow: 0 0 40px hsl(0, 85%, 50% / 0.8), 0 0 60px hsl(0, 85%, 50% / 0.4);
+    }
+  }
+
+  .metal-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metal-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-glow);
+    transition: left 0.5s;
+  }
+
+  .metal-shine:hover::before {
+    left: 100%;
+  }
+}

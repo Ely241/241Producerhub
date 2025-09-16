@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "TRECE",
+    "artist_id": 1,
+    "price": 0.00,
+    "cover_image_url": "/images/SIXTRECEEE.png",
+    "audio_file_url": "/audio/TRECE.mp3",
+    "genre": "Trap",
+    "bpm": 130,
+    "duration": "3:00",
+    "author": "JYLSTHEPRODUCER",
+    "tags": ["Sombre", "Lourd", "Atmosphérique", "63OG"],
+    "likes": 0
+  },
+  {
+    "id": 2,
+    "title": "Inspiré de Big Scarr",
+    "artist_id": 2,
+    "price": 0.00,
+    "cover_image_url": "/assets-optimized/image/BIGSCARR-PNG.webp",
+    "audio_file_url": "/assets/audio/BIGSCARR-BEAT.mp3",
+    "genre": "Trap",
+    "bpm": 140,
+    "duration": "3:15",
+    "author": "JYLSTHEPRODUCER",
+    "tags": ["Trap", "Dark", "Aggressive"],
+    "likes": 0
+  },
+  {
+    "id": 3,
+    "title": "Inspiré de Key Glock",
+    "artist_id": 3,
+    "price": 0.00,
+    "cover_image_url": "/assets-optimized/image/KEYGLOCK-PNG.webp",
+    "audio_file_url": "/assets/audio/KEYGLOCK-BEAT.mp3",
+    "genre": "Trap",
+    "bpm": 135,
+    "duration": "3:10",
+    "author": "JYLSTHEPRODUCER",
+    "tags": ["Trap", "Energetic", "Hard"],
+    "likes": 0
+  },
+  {
+    "id": 4,
+    "title": "Inspiré de Chief Keef",
+    "artist_id": 4,
+    "price": 0.00,
+    "cover_image_url": "/assets-optimized/image/CHIEFKEEF-PNG.webp",
+    "audio_file_url": "/assets/audio/CHIEFKEEF-BEAT.mp3",
+    "genre": "Drill",
+    "bpm": 145,
+    "duration": "3:20",
+    "author": "JYLSTHEPRODUCER",
+    "tags": ["Drill", "Gritty", "Street"],
+    "likes": 0
+  }
+]
