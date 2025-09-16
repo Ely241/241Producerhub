@@ -36,9 +36,10 @@ const db = knex(knexConfig[process.env.NODE_ENV || 'development']);
 // app.use('/api', apiRoutes); // Utiliser le routeur importé
 
 // Gérer toutes les autres requêtes en renvoyant l'application frontend
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../dist', 'index.html'));
-});
+// Gérer toutes les autres requêtes en renvoyant l'application frontend
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../../dist', 'index.html'));
+// });
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
