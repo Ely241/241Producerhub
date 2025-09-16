@@ -44,166 +44,165 @@ const getGroupConcatFunction = (dbClient: string) => {
 router.get('/', (req, res) => res.send('API Works!'));
 
 // API Routes (commented for debugging)
-/*
-router.get('/beats', validate(beatsQuerySchema), async (req, res, next) => {
-  try {
-    const { q, genre, page, limit } = res.locals.validatedQuery as { q?: string, genre?: string, page: number, limit: number };
-    const offset = (page - 1) * limit;
-
-    const groupConcatFn = getGroupConcatFunction(db.client.config.client);
-
-    let beatsQuery = db('beats')
-      .select(
-        'beats.*',
-        'artists.name as artist_name',
-        db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ?) as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list', [','])
-      )
-      .leftJoin('artists', 'beats.artist_id', 'artists.id')
-      .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')
-      .leftJoin('tags', 'beat_tags.tag_id', 'tags.id')
-      .groupBy('beats.id', 'artists.name', 'beats.title', 'beats.price', 'beats.cover_image_url', 'beats.audio_file_url', 'beats.likes', 'beats.genre', 'beats.bpm', 'beats.duration', 'beats.author', 'beats.artist_id')
-      .orderBy('beats.id');
-
-    if (q) {
-      beatsQuery = beatsQuery.where('beats.title', 'like', `%${q}%`).orWhere('artists.name', 'like', `%${q}%`);
-    }
-
-    if (genre) {
-      beatsQuery = beatsQuery.andWhere('beats.genre', genre as string);
-    }
-
-    const totalCountQuery = db('beats')
-      .count({ count: 'beats.id' })
-      .first();
-
-    if (q) {
-      totalCountQuery.leftJoin('artists', 'beats.artist_id', 'artists.id');
-      totalCountQuery.where('beats.title', 'like', `%${q}%`).orWhere('artists.name', 'like', `%${q}%`);
-    }
-    if (genre) {
-      totalCountQuery.andWhere('beats.genre', genre as string);
-    }
-
-    const { count } = (await totalCountQuery) as { count: number | string };
-    const totalCount = typeof count === 'string' ? parseInt(count, 10) : count;
-
-    console.log('Nombre total de beats avant pagination:', totalCount); // Log de débogage
-    const beats = await beatsQuery.offset(offset).limit(limit);
-    console.log('Beats récupérés après pagination:', beats.length); // Log de débogage
-
-    const processedBeats = beats.map(beat => ({
-      ...beat,
-      tags: beat.tags_list ? (beat.tags_list as string).split(',') : [],
-      tags_list: undefined
-    }));
-
-    res.json({ beats: processedBeats, totalCount });
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.get('/genres', async (req, res, next) => {
-  try {
-    const genres = await db<Beat>('beats').distinct('genre').whereNotNull('genre');
-    res.json(genres.map(g => g.genre).filter(g => g && g.trim() !== ''));
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.get('/beats/:id', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-
-    const groupConcatFn = getGroupConcatFunction(db.client.config.client);
-
-    const beat = await db('beats')
-      .select(
-        'beats.*',
-        'artists.name as artist_name',
-        db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ?) as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list', [','])
-      )
-      .leftJoin('artists', 'beats.artist_id', 'artists.id')
-      .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')
-      .leftJoin('tags', 'beat_tags.tag_id', 'tags.id')
-      .where('beats.id', id)
-      .groupBy('beats.id', 'artists.name', 'beats.title', 'beats.price', 'beats.cover_image_url', 'beats.audio_file_url', 'beats.likes', 'beats.genre', 'beats.bpm', 'beats.duration', 'beats.author', 'beats.artist_id')
-      .first();
-
-    if (beat) {
-      const processedBeat = {
-        ...beat,
-        tags: beat.tags_list ? (beat.tags_list as string).split(',') : [],
-        tags_list: undefined
-      };
-      res.json(processedBeat);
-    } else {
-      res.status(404).json({ message: 'Beat not found' });
-    }
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.get('/artists', async (req, res, next) => {
-  try {
-    const artists = await db('artists').select('*');
-    res.json(artists);
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.post('/beats/:id/like', async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    await db('beats').where({ id }).increment('likes', 1);
-    const beat = await db<Beat>('beats').where('id', id).first();
-    res.json(beat);
-  } catch (err) {
-    next(err);
-  }
-});
-
-// Progress API Routes
-router.post('/click', async (req, res, next) => {
-  try {
-    await db.transaction(async trx => {
-      const progress = await trx('progress').first();
-      if (!progress) {
-        throw new Error('Progress record not found.');
-      }
-
-      const newCurrentClicks = progress.current_clicks + 1;
-      const newIsCompleted = newCurrentClicks >= progress.target_clicks;
-
-      await trx('progress')
-        .update({
-          current_clicks: newCurrentClicks,
-          is_completed: newIsCompleted,
-        })
-        .where({ id: progress.id });
-
-      const updatedProgress = await trx('progress').first();
-      res.json(updatedProgress);
-    });
-
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.get('/progress', async (req, res, next) => {
-  try {
-    const progress = await db('progress').first();
-    if (!progress) {
-      return res.status(404).json({ message: 'Progress record not found.' });
-    }
-    res.json(progress);
-  } catch (err) {
-    next(err);
-  }
-});
+// router.get('/beats', validate(beatsQuerySchema), async (req, res, next) => {
+//   try {
+//     const { q, genre, page, limit } = res.locals.validatedQuery as { q?: string, genre?: string, page: number, limit: number };
+//     const offset = (page - 1) * limit;
+//
+//     const groupConcatFn = getGroupConcatFunction(db.client.config.client);
+//
+//     let beatsQuery = db('beats')
+//       .select(
+//         'beats.*',
+//         'artists.name as artist_name',
+//         db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ?) as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list', [','])
+//       )
+//       .leftJoin('artists', 'beats.artist_id', 'artists.id')
+//       .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')
+//       .leftJoin('tags', 'beat_tags.tag_id', 'tags.id')
+//       .groupBy('beats.id', 'artists.name', 'beats.title', 'beats.price', 'beats.cover_image_url', 'beats.audio_file_url', 'beats.likes', 'beats.genre', 'beats.bpm', 'beats.duration', 'beats.author', 'beats.artist_id')
+//       .orderBy('beats.id');
+//
+//     if (q) {
+//       beatsQuery = beatsQuery.where('beats.title', 'like', `%${q}%`).orWhere('artists.name', 'like', `%${q}%`);
+//     }
+//
+//     if (genre) {
+//       beatsQuery = beatsQuery.andWhere('beats.genre', genre as string);
+//     }
+//
+//     const totalCountQuery = db('beats')
+//       .count({ count: 'beats.id' })
+//       .first();
+//
+//     if (q) {
+//       totalCountQuery.leftJoin('artists', 'beats.artist_id', 'artists.id');
+//       totalCountQuery.where('beats.title', 'like', `%${q}%`).orWhere('artists.name', 'like', `%${q}%`);
+//     }
+//     if (genre) {
+//       totalCountQuery.andWhere('beats.genre', genre as string);
+//     }
+//
+//     const { count } = (await totalCountQuery) as { count: number | string };
+//     const totalCount = typeof count === 'string' ? parseInt(count, 10) : count;
+//
+//     console.log('Nombre total de beats avant pagination:', totalCount); // Log de débogage
+//     const beats = await beatsQuery.offset(offset).limit(limit);
+//     console.log('Beats récupérés après pagination:', beats.length); // Log de débogage
+//
+//     const processedBeats = beats.map(beat => ({
+//       ...beat,
+//       tags: beat.tags_list ? (beat.tags_list as string).split(',') : [],
+//       tags_list: undefined
+//     }));
+//
+//     res.json({ beats: processedBeats, totalCount });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+//
+// router.get('/genres', async (req, res, next) => {
+//   try {
+//     const genres = await db<Beat>('beats').distinct('genre').whereNotNull('genre');
+//     res.json(genres.map(g => g.genre).filter(g => g && g.trim() !== ''));
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+//
+// router.get('/beats/:id', async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//
+//     const groupConcatFn = getGroupConcatFunction(db.client.config.client);
+//
+//     const beat = await db('beats')
+//       .select(
+//         'beats.*',
+//         'artists.name as artist_name',
+//         db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ?) as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list', [','])
+//       )
+//       .leftJoin('artists', 'beats.artist_id', 'artists.id')
+//       .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')
+//       .leftJoin('tags', 'beat_tags.tag_id', 'tags.id')
+//       .where('beats.id', id)
+//       .groupBy('beats.id', 'artists.name', 'beats.title', 'beats.price', 'beats.cover_image_url', 'beats.audio_file_url', 'beats.likes', 'beats.genre', 'beats.bpm', 'beats.duration', 'beats.author', 'beats.artist_id')
+//       .first();
+//
+//     if (beat) {
+//       const processedBeat = {
+//         ...beat,
+//         tags: beat.tags_list ? (beat.tags_list as string).split(',') : [],
+//         tags_list: undefined
+//       };
+//       res.json(processedBeat);
+//     } else {
+//       res.status(404).json({ message: 'Beat not found' });
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+//
+// router.get('/artists', async (req, res, next) => {
+//   try {
+//     const artists = await db('artists').select('*');
+//     res.json(artists);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+//
+// router.post('/beats/:id/like', async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     await db('beats').where({ id }).increment('likes', 1);
+//     const beat = await db<Beat>('beats').where('id', id).first();
+//     res.json(beat);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+//
+// // Progress API Routes
+// router.post('/click', async (req, res, next) => {
+//   try {
+//     await db.transaction(async trx => {
+//       const progress = await trx('progress').first();
+//       if (!progress) {
+//         throw new Error('Progress record not found.');
+//       }
+//
+//       const newCurrentClicks = progress.current_clicks + 1;
+//       const newIsCompleted = newCurrentClicks >= progress.target_clicks;
+//
+//       await trx('progress')
+//         .update({
+//           current_clicks: newCurrentClicks,
+//           is_completed: newIsCompleted,
+//         })
+//         .where({ id: progress.id });
+//
+//       const updatedProgress = await trx('progress').first();
+//       res.json(updatedProgress);
+//     });
+//
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+//
+// router.get('/progress', async (req, res, next) => {
+//   try {
+//     const progress = await db('progress').first();
+//     if (!progress) {
+//       return res.status(404).json({ message: 'Progress record not found.' });
+//     }
+//     res.json(progress);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 export default router;
