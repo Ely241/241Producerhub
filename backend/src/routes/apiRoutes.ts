@@ -205,4 +205,5 @@ router.get('/', (req, res) => res.send('API Works!'));
 //   }
 // });
 
+console.log('apiRoutes initialized with test route.');
 export default router;
