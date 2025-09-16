@@ -33,7 +33,7 @@ console.log('Path for images (other root assets):', path.join(__dirname, '../../
 app.use('/images', express.static(path.join(__dirname, '../../src/assets'))); // Other root assets like hero-bg.jpg, logo.png
 
 // API Routes
-app.use('/api', apiRoutes); // Utiliser le routeur importé
+// app.use('/api', apiRoutes); // Utiliser le routeur importé
 
 // Gérer toutes les autres requêtes en renvoyant l'application frontend
 app.get('*', (req, res) => {
