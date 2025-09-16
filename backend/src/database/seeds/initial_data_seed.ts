@@ -41,7 +41,7 @@ export async function seed(knex: Knex): Promise<void> {
                         tagId = existingTag.id;
                     } else {
                         // Insert new tag and get its ID
-                        const newTagId = await knex('tags').insert({ name: tagName.trim() });
+                        const newTagId = (await knex('tags').insert({ name: tagName.trim() }).returning('id'))[0].id;
                         tagId = newTagId;
                     }
                     // Insert into beat_tags, ignoring conflicts if already exists
