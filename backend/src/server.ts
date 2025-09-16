@@ -19,10 +19,17 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files (audio and images)
+console.log('process.env.AUDIO_ASSETS_DIR:', process.env.AUDIO_ASSETS_DIR);
+console.log('Path for audio (new beats):', path.join(__dirname, process.env.AUDIO_ASSETS_DIR || '../../src/assets/audio'));
 app.use('/audio', express.static(path.join(__dirname, process.env.AUDIO_ASSETS_DIR || '../../src/assets/audio'))); // New beats
+console.log('Path for audio (6trece):', path.join(__dirname, '../../src/assets/6trece'));
 app.use('/audio', express.static(path.join(__dirname, '../../src/assets/6trece'))); // Original 6trece audio
+console.log('process.env.IMAGE_ASSETS_DIR:', process.env.IMAGE_ASSETS_DIR);
+console.log('Path for images (new beats):', path.join(__dirname, process.env.IMAGE_ASSETS_DIR || '../../src/assets/images'));
 app.use('/images', express.static(path.join(__dirname, process.env.IMAGE_ASSETS_DIR || '../../src/assets/images'))); // New beats
+console.log('Path for images (6trece):', path.join(__dirname, '../../src/assets/6trece'));
 app.use('/images', express.static(path.join(__dirname, '../../src/assets/6trece'))); // Original 6trece assets
+console.log('Path for images (other root assets):', path.join(__dirname, '../../src/assets'));
 app.use('/images', express.static(path.join(__dirname, '../../src/assets'))); // Other root assets like hero-bg.jpg, logo.png
 
 // API Routes
