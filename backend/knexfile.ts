@@ -1,4 +1,9 @@
 import type { Knex } from "knex";
+import pg from 'pg'; // Importer le module pg
+
+// Configurer le parseur de type pour les nombres décimaux/numériques de PostgreSQL
+// OID 1700 est le type NUMERIC/DECIMAL en PostgreSQL
+pg.types.setTypeParser(pg.types.builtins.NUMERIC, parseFloat);
 
 const config: { [key: string]: Knex.Config } = {
   development: {
