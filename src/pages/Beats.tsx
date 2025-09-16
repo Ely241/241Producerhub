@@ -153,7 +153,7 @@ const Beats = () => {
                     duration={beat.duration || 'N/A'}
                     price={beat.price ? beat.price.toFixed(2) : 'Écoute seule'}
                     tags={beat.tags || []}
-                    imageSrc={`${API_BASE_URL}${beat.cover_image_url}`}
+                    imageSrc={beat.cover_image_url}
                     author={beat.author || 'Inconnu'}
                     likes={beat.likes || 0}
                     onPlay={() => handlePlay(index)} // Pass the handler to the card
