@@ -40,7 +40,11 @@ const getGroupConcatFunction = (dbClient: string) => {
   return 'GROUP_CONCAT'; // Default or throw error
 };
 
-// API Routes
+// Route de test simple pour vérifier que le routeur fonctionne
+router.get('/', (req, res) => res.send('API Works!'));
+
+// API Routes (commented for debugging)
+/*
 router.get('/beats', validate(beatsQuerySchema), async (req, res, next) => {
   try {
     const { q, genre, page, limit } = res.locals.validatedQuery as { q?: string, genre?: string, page: number, limit: number };
