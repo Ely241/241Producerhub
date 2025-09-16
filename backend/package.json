@@ -26,6 +26,8 @@
     "@types/knex": "^0.15.2",
     "@types/sqlite3": "^3.1.11",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "joi": "^18.0.1",
+    "@types/joi": "^17.2.2"
   }
 }
