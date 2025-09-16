@@ -68,7 +68,7 @@ app.get('/api/beats', validate(beatsQuerySchema), async (req, res, next) => {
       .select(
         'beats.*',
         'artists.name as artist_name',
-        db.raw(`${groupConcatFn}(tags.name) as tags_list`)
+        db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ",") as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list')
       )
       .leftJoin('artists', 'beats.artist_id', 'artists.id')
       .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')
@@ -145,7 +145,7 @@ app.get('/api/beats/:id', async (req, res, next) => {
       .select(
         'beats.*',
         'artists.name as artist_name',
-        db.raw(`${groupConcatFn}(tags.name) as tags_list`)
+        db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ",") as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list')
       )
       .leftJoin('artists', 'beats.artist_id', 'artists.id')
       .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')
