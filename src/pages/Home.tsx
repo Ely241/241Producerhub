@@ -17,7 +17,7 @@ const oneYearsAgoProject = {
   beats: [
     { title: 'Inspiré de Big Scarr', image: '/assets-optimized/image/BIGSCARR-PNG.webp' },
     { title: 'Inspiré de Key Glock', image: '/assets-optimized/image/KEYGLOCK-PNG.webp' },
-    { title: 'Inspiré de Tchief Keef', image: '/assets-optimized/image/CHIEFKEEF-PNG.webp' },
+    { title: 'Inspiré de Chief Keef', image: '/assets-optimized/image/CHIEFKEEF-PNG.webp' },
   ],
 };
 
@@ -28,7 +28,8 @@ const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.b
     throw new Error('Network response was not ok');
   }
   const data = await res.json();
-  return data.beats
+  console.log('Home.tsx - Beats bruts de l'API:', data.beats);
+  const processedBeats = data.beats
     .filter((beat: Beat) => beatTitles.includes(beat.title))
     .map((beat: Beat) => {
       const localBeat = projectBeatsConfig.find(b => b.title === beat.title);
@@ -37,6 +38,8 @@ const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.b
         imageSrc: localBeat ? localBeat.image : beat.cover_image_url, // Use local image if available
       };
     });
+  console.log('Home.tsx - Project Beats après filtre et map:', processedBeats);
+  return processedBeats;
 };
 
 const Home = () => {
@@ -151,7 +154,9 @@ const Home = () => {
             ) : isError ? (
               <p className="absolute inset-0 flex items-center justify-center text-red-500 z-0">Erreur de chargement des beats.</p>
             ) : (
+              console.log('Home.tsx - projectBeats avant rendu:', projectBeats), // Ajout du log
               projectBeats && projectBeats.map((beat, index) => (
+                console.log(`Home.tsx - Rendu du beat ${beat.title}, imageSrc: ${beat.imageSrc || beat.cover_image_url || './placeholder.svg'}`), // Ajout du log
                 <img
                   key={beat.id}
                   src={beat.imageSrc || beat.cover_image_url || './placeholder.svg'}

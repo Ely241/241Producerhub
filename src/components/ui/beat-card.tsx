@@ -23,6 +23,7 @@ interface BeatCardProps {
 
 const BeatCard = (beat: BeatCardProps) => {
   const { id, title, genre, bpm, duration, price, tags = [], imageSrc, author, likes, onPlay } = beat;
+  console.log(`BeatCard - Beat ID: ${id}, Title: ${title}, ImageSrc: ${imageSrc}`);
   const queryClient = useQueryClient();
 
   const [likeCount, setLikeCount] = useState(likes);

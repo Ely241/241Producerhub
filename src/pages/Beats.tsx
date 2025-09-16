@@ -35,7 +35,10 @@ const fetchBeats = async (query: string, genre: string, page: number, limit: num
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
-  return res.json();
+  return res.json().then(data => {
+    console.log('Beats.tsx - Beats bruts de l'API:', data.beats.map((b: Beat) => ({ id: b.id, title: b.title, cover_image_url: b.cover_image_url })));
+    return data;
+  });
 };
 
 const fetchGenres = async (): Promise<string[]> => {
@@ -133,6 +136,7 @@ const Beats = () => {
 
         {!isLoading && !isError && data && data.beats.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {console.log('Beats.tsx - data.beats avant rendu:', data.beats)} {/* Ajout du log */}
             {data.beats.map((beat, index) => (
                 <motion.div
                 key={beat.id}
@@ -140,6 +144,7 @@ const Beats = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
+                {console.log(`Beats.tsx - Rendu du beat ${beat.title}, imageSrc: ${API_BASE_URL}${beat.cover_image_url}`)} {/* Ajout du log */}
                 <BeatCard 
                     id={beat.id}
                     title={beat.title}
