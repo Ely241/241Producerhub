@@ -1,6 +1,5 @@
 import { Knex } from "knex";
-import * as beatsJson from "../../data/beats.json";
-const beatsData = Array.from(beatsJson.default);
+import beatsData from "../../data/beats.json";
 import artistsData from "../../data/artists.json";
 
 export async function seed(knex: Knex): Promise<void> {
