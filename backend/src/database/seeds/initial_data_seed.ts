@@ -1,8 +1,12 @@
 import { Knex } from "knex";
-import beatsData from "../../data/beats.json";
+import fs from 'fs';
+import path from 'path';
 import artistsData from "../../data/artists.json";
 
 export async function seed(knex: Knex): Promise<void> {
+    const beatsDataPath = path.join(__dirname, '../../data/beats.json');
+    const beatsData = JSON.parse(fs.readFileSync(beatsDataPath, 'utf8'));
+
     console.log('beatsData type:', typeof beatsData, 'Is array:', Array.isArray(beatsData), 'First beat tags type:', typeof beatsData[0]?.tags, 'First beat tags is array:', Array.isArray(beatsData[0]?.tags)); // New debugging line
     // Deletes ALL existing entries in reverse order of foreign keys
     await knex("beat_tags").del();
