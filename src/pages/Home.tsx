@@ -28,7 +28,7 @@ const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.b
     throw new Error('Network response was not ok');
   }
   const data = await res.json();
-  console.log('Home.tsx - Beats bruts de l'API:', data.beats);
+  console.log(`Home.tsx - Beats bruts de l'API:`, data.beats);
   const processedBeats = data.beats
     .filter((beat: Beat) => beatTitles.includes(beat.title))
     .map((beat: Beat) => {
