@@ -33,8 +33,8 @@ app.use((req, res, next) => {
 
 // Serve static files (audio and images)
 const publicAssetsPath = path.resolve(process.cwd(), 'public_assets'); // Chemin absolu vers le dossier des assets
-app.use('/audio', express.static(path.join(publicAssetsPath, 'audio')));
-app.use('/audio', express.static(path.join(publicAssetsPath, '6trece')));
+app.use('/audio', express.static(path.join(publicAssetsPath, 'audio'))); // Pour BIGSCARR, KEYGLOCK, CHIEFKEEF
+app.use('/audio/6trece', express.static(path.join(publicAssetsPath, '6trece'))); // Pour TRECE
 app.use('/images', express.static(path.join(publicAssetsPath, 'images')));
 app.use('/images', express.static(path.join(publicAssetsPath, '6trece')));
 app.use('/images', express.static(path.join(publicAssetsPath, 'assets'))); // Other root assets like hero-bg.jpg, logo.png
