@@ -24,6 +24,7 @@ app.use('/audio', express.static(path.join(__dirname, '../../src/assets/6trece')
 app.use('/images', express.static(path.join(__dirname, process.env.IMAGE_ASSETS_DIR || '../../src/assets/images'))); // New beats
 app.use('/images', express.static(path.join(__dirname, '../../src/assets/6trece'))); // Original 6trece assets
 app.use('/images', express.static(path.join(__dirname, '../../src/assets'))); // Other root assets like hero-bg.jpg, logo.png
+app.use('/assets-optimized', express.static(path.join(__dirname, '../../public/assets-optimized'))); // Servir les images optimisées
 
 // API Routes
 app.use('/api', apiRoutes); // Utiliser le routeur importé
