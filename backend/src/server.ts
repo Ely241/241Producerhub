@@ -102,7 +102,9 @@ app.get('/api/beats', validate(beatsQuerySchema), async (req, res, next) => {
     const { count } = (await totalCountQuery) as { count: number | string };
     const totalCount = typeof count === 'string' ? parseInt(count, 10) : count;
 
+    console.log('Nombre total de beats avant pagination:', totalCount); // Ajout du log
     const beats = await beatsQuery.offset(offset).limit(limit);
+    console.log('Beats récupérés après pagination:', beats.length); // Ajout du log
 
     // Post-process tags_list into an array
     const processedBeats = beats.map(beat => ({
