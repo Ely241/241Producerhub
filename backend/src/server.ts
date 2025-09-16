@@ -18,6 +18,19 @@ const db = knex(knexConfig[process.env.NODE_ENV || 'development']);
 app.use(cors());
 app.use(express.json());
 
+// Middleware pour définir la Content-Security-Policy (CSP)
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; " +
+    "img-src 'self' data: https://two41producerhub-1.onrender.com; " + 
+    "media-src 'self' https://two41producerhub-1.onrender.com; " + 
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " + 
+    "style-src 'self' 'unsafe-inline';"
+  );
+  next();
+});
+
 // Serve static files (audio and images)
 app.use('/audio', express.static(path.join(process.cwd(), 'backend/assets/audio'))); // New beats
 app.use('/audio', express.static(path.join(process.cwd(), 'backend/assets/6trece'))); // Original 6trece audio
