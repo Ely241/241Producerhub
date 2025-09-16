@@ -1,4 +1,6 @@
 [
   { "id": 1, "name": "Artiste 1", "profile_image_url": null },
-  { "id": 2, "name": "Artiste 2", "profile_image_url": null }
+  { "id": 2, "name": "Artiste 2", "profile_image_url": null },
+  { "id": 3, "name": "Artiste 3", "profile_image_url": null },
+  { "id": 4, "name": "Artiste 4", "profile_image_url": null }
 ]
