@@ -4,7 +4,6 @@
     "module": "commonjs",
     "lib": ["es2022"],
     "outDir": "./dist",
-    "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
       "@shared/*": ["../shared/*"]
@@ -13,8 +12,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "knexfile.ts", "scripts/**/*.ts"],
   "exclude": ["node_modules"]
 }
