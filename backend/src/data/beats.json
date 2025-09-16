@@ -4,7 +4,7 @@
     "title": "TRECE",
     "artist_id": 1,
     "price": 0.00,
-    "cover_image_url": "/images/SIXTRECEEE.png",
+    "cover_image_url": "/assets-optimized/6trece/SIXTRECEEE.webp",
     "audio_file_url": "/audio/TRECE.mp3",
     "genre": "Trap",
     "bpm": 130,
