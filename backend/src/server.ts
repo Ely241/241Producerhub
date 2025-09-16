@@ -32,12 +32,13 @@ app.use((req, res, next) => {
 });
 
 // Serve static files (audio and images)
-app.use('/audio', express.static(path.join(process.cwd(), 'backend/assets/audio'))); // New beats
-app.use('/audio', express.static(path.join(process.cwd(), 'backend/assets/6trece'))); // Original 6trece audio
-app.use('/images', express.static(path.join(process.cwd(), 'backend/assets/images'))); // New beats
-app.use('/images', express.static(path.join(process.cwd(), 'backend/assets/6trece'))); // Original 6trece assets
-app.use('/images', express.static(path.join(process.cwd(), 'backend/assets'))); // Other root assets like hero-bg.jpg, logo.png
-app.use('/assets-optimized', express.static(path.join(process.cwd(), 'backend/public/assets-optimized'))); // Servir les images optimisées
+const publicAssetsPath = path.resolve(process.cwd(), 'public_assets'); // Chemin absolu vers le dossier des assets
+app.use('/audio', express.static(path.join(publicAssetsPath, 'audio')));
+app.use('/audio', express.static(path.join(publicAssetsPath, '6trece')));
+app.use('/images', express.static(path.join(publicAssetsPath, 'images')));
+app.use('/images', express.static(path.join(publicAssetsPath, '6trece')));
+app.use('/images', express.static(path.join(publicAssetsPath, 'assets'))); // Other root assets like hero-bg.jpg, logo.png
+app.use('/assets-optimized', express.static(path.join(publicAssetsPath, 'optimized/image'))); // Servir les images optimisées
 
 // API Routes
 app.use('/api', apiRoutes); // Utiliser le routeur importé
