@@ -26,7 +26,8 @@ export async function seed(knex: Knex): Promise<void> {
     for (const beat of beatsData) {
         if (beat.tags && Array.isArray(beat.tags)) {
             console.log('Beat ID:', beat.id, 'Tags:', beat.tags, 'Is array:', Array.isArray(beat.tags)); // Debugging line
-            for (const tagName of Array.from(beat.tags)) {
+            for (let i = 0; i < beat.tags.length; i++) {
+                const tagName = beat.tags[i];
                 if (typeof tagName === 'string' && tagName.trim() !== '') {
                     let tagId;
                     // Check if tag already exists
