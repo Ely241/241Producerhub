@@ -24,6 +24,7 @@ export async function seed(knex: Knex): Promise<void> {
     // Process tags and beat_tags
     for (const beat of beatsData) {
         if (beat.tags && Array.isArray(beat.tags)) {
+            console.log('Beat ID:', beat.id, 'Tags:', beat.tags, 'Is array:', Array.isArray(beat.tags)); // Debugging line
             for (const tagName of beat.tags) {
                 if (typeof tagName === 'string' && tagName.trim() !== '') {
                     let tagId;
