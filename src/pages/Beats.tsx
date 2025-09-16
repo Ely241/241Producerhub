@@ -31,7 +31,10 @@ const fetchBeats = async (query: string, genre: string, page: number, limit: num
   if (genre) params.append('genre', genre);
   params.append('page', page.toString());
   params.append('limit', limit.toString());
-  const res = await fetch(`${API_BASE_URL}/api/beats?${params.toString()}`);
+  const requestUrl = `${API_BASE_URL}/api/beats?${params.toString()}`;
+  console.log('Beats.tsx - Requête API beats:', requestUrl);
+  const res = await fetch(requestUrl);
+  console.log('Beats.tsx - Réponse API beats OK:', res.ok, 'Statut:', res.status);
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }

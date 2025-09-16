@@ -23,7 +23,10 @@ const oneYearsAgoProject = {
 
 const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.beats): Promise<Beat[]> => {
   const beatTitles = projectBeatsConfig.map(b => b.title);
-  const res = await fetch(`${API_BASE_URL}/api/beats?limit=100`); 
+  const requestUrl = `${API_BASE_URL}/api/beats?limit=100`;
+  console.log('Home.tsx - Requête API beats:', requestUrl);
+  const res = await fetch(requestUrl); 
+  console.log('Home.tsx - Réponse API beats OK:', res.ok, 'Statut:', res.status);
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
