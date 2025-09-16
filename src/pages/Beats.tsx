@@ -36,7 +36,7 @@ const fetchBeats = async (query: string, genre: string, page: number, limit: num
     throw new Error('Network response was not ok');
   }
   return res.json().then(data => {
-    console.log('Beats.tsx - Beats bruts de l'API:', data.beats.map((b: Beat) => ({ id: b.id, title: b.title, cover_image_url: b.cover_image_url })));
+    console.log(`Beats.tsx - Beats bruts de l'API:`, data.beats.map((b: Beat) => ({ id: b.id, title: b.title, cover_image_url: b.cover_image_url })));
     return data;
   });
 };
