@@ -2,6 +2,7 @@ import { Knex } from "knex";
 import fs from 'fs';
 import path from 'path';
 import artistsData from "../../data/artists.json";
+import type { Beat } from '@shared/types';
 
 export async function seed(knex: Knex): Promise<void> {
     const beatsDataPath = path.join(__dirname, '../../data/beats.json');
@@ -18,7 +19,7 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("artists").insert(artistsData);
 
     // Prepare beats data without the 'tags' property for direct insertion
-    const beatsToInsert = beatsData.map(beat => {
+    const beatsToInsert = beatsData.map((beat: Beat) => {
         const { tags, ...rest } = beat; // Destructure to exclude 'tags'
         return rest;
     });
@@ -27,7 +28,7 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("beats").insert(beatsToInsert);
 
     // Process tags and beat_tags
-    for (const beat of beatsData) {
+    for (const beat of beatsData as Beat[]) {
         if (beat.tags && Array.isArray(beat.tags)) {
             console.log('Beat ID:', beat.id, 'Tags:', beat.tags, 'Is array:', Array.isArray(beat.tags)); // Debugging line
             for (let i = 0; i < beat.tags.length; i++) {
