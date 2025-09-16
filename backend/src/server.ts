@@ -26,7 +26,7 @@ app.use('/images', express.static(path.join(__dirname, '../../src/assets/6trece'
 app.use('/images', express.static(path.join(__dirname, '../../src/assets'))); // Other root assets like hero-bg.jpg, logo.png
 
 // API Routes
-// app.use('/api', apiRoutes); // Utiliser le routeur importé
+app.use('/api', apiRoutes); // Utiliser le routeur importé
 
 // Gérer toutes les autres requêtes en renvoyant l'application frontend
 // Gérer toutes les autres requêtes en renvoyant l'application frontend
