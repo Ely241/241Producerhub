@@ -96,6 +96,8 @@ router.get('/beats', validate(beatsQuerySchema), async (req, res, next) => {
       tags_list: undefined
     }));
 
+    console.log('Beats processed and sent to frontend:', processedBeats.map(b => ({ id: b.id, title: b.title, cover_image_url: b.cover_image_url }))); // Log des URLs d'images
+
     res.json({ beats: processedBeats, totalCount });
   } catch (err) {
     next(err);
