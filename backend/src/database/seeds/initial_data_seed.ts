@@ -28,7 +28,7 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("beats").insert(beatsToInsert);
 
     // Process tags and beat_tags
-    for (const beat: Beat of beatsData as Beat[]) {
+    for (const beat of beatsData as Beat[]) {
         if (beat.tags && Array.isArray(beat.tags)) {
             console.log('Beat ID:', beat.id, 'Tags:', beat.tags, 'Is array:', Array.isArray(beat.tags)); // Debugging line
             for (let i = 0; i < beat.tags.length; i++) {
