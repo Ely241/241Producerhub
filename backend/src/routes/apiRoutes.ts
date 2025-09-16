@@ -44,63 +44,63 @@ const getGroupConcatFunction = (dbClient: string) => {
 router.get('/', (req, res) => res.send('API Works!'));
 
 // API Routes (commented for debugging)
-// router.get('/beats', validate(beatsQuerySchema), async (req, res, next) => {
-//   try {
-//     const { q, genre, page, limit } = res.locals.validatedQuery as { q?: string, genre?: string, page: number, limit: number };
-//     const offset = (page - 1) * limit;
-//
-//     const groupConcatFn = getGroupConcatFunction(db.client.config.client);
-//
-//     let beatsQuery = db('beats')
-//       .select(
-//         'beats.*',
-//         'artists.name as artist_name',
-//         db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ?) as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list', [','])
-//       )
-//       .leftJoin('artists', 'beats.artist_id', 'artists.id')
-//       .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')
-//       .leftJoin('tags', 'beat_tags.tag_id', 'tags.id')
-//       .groupBy('beats.id', 'artists.name', 'beats.title', 'beats.price', 'beats.cover_image_url', 'beats.audio_file_url', 'beats.likes', 'beats.genre', 'beats.bpm', 'beats.duration', 'beats.author', 'beats.artist_id')
-//       .orderBy('beats.id');
-//
-//     if (q) {
-//       beatsQuery = beatsQuery.where('beats.title', 'like', `%${q}%`).orWhere('artists.name', 'like', `%${q}%`);
-//     }
-//
-//     if (genre) {
-//       beatsQuery = beatsQuery.andWhere('beats.genre', genre as string);
-//     }
-//
-//     const totalCountQuery = db('beats')
-//       .count({ count: 'beats.id' })
-//       .first();
-//
-//     if (q) {
-//       totalCountQuery.leftJoin('artists', 'beats.artist_id', 'artists.id');
-//       totalCountQuery.where('beats.title', 'like', `%${q}%`).orWhere('artists.name', 'like', `%${q}%`);
-//     }
-//     if (genre) {
-//       totalCountQuery.andWhere('beats.genre', genre as string);
-//     }
-//
-//     const { count } = (await totalCountQuery) as { count: number | string };
-//     const totalCount = typeof count === 'string' ? parseInt(count, 10) : count;
-//
-//     console.log('Nombre total de beats avant pagination:', totalCount); // Log de débogage
-//     const beats = await beatsQuery.offset(offset).limit(limit);
-//     console.log('Beats récupérés après pagination:', beats.length); // Log de débogage
-//
-//     const processedBeats = beats.map(beat => ({
-//       ...beat,
-//       tags: beat.tags_list ? (beat.tags_list as string).split(',') : [],
-//       tags_list: undefined
-//     }));
-//
-//     res.json({ beats: processedBeats, totalCount });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+router.get('/beats', validate(beatsQuerySchema), async (req, res, next) => {
+  try {
+    const { q, genre, page, limit } = res.locals.validatedQuery as { q?: string, genre?: string, page: number, limit: number };
+    const offset = (page - 1) * limit;
+
+    const groupConcatFn = getGroupConcatFunction(db.client.config.client);
+
+    let beatsQuery = db('beats')
+      .select(
+        'beats.*',
+        'artists.name as artist_name',
+        db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ?) as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list', [','])
+      )
+      .leftJoin('artists', 'beats.artist_id', 'artists.id')
+      .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')
+      .leftJoin('tags', 'beat_tags.tag_id', 'tags.id')
+      .groupBy('beats.id', 'artists.name', 'beats.title', 'beats.price', 'beats.cover_image_url', 'beats.audio_file_url', 'beats.likes', 'beats.genre', 'beats.bpm', 'beats.duration', 'beats.author', 'beats.artist_id')
+      .orderBy('beats.id');
+
+    if (q) {
+      beatsQuery = beatsQuery.where('beats.title', 'like', `%${q}%`).orWhere('artists.name', 'like', `%${q}%`);
+    }
+
+    if (genre) {
+      beatsQuery = beatsQuery.andWhere('beats.genre', genre as string);
+    }
+
+    const totalCountQuery = db('beats')
+      .count({ count: 'beats.id' })
+      .first();
+
+    if (q) {
+      totalCountQuery.leftJoin('artists', 'beats.artist_id', 'artists.id');
+      totalCountQuery.where('beats.title', 'like', `%${q}%`).orWhere('artists.name', 'like', `%${q}%`);
+    }
+    if (genre) {
+      totalCountQuery.andWhere('beats.genre', genre as string);
+    }
+
+    const { count } = (await totalCountQuery) as { count: number | string };
+    const totalCount = typeof count === 'string' ? parseInt(count, 10) : count;
+
+    console.log('Nombre total de beats avant pagination:', totalCount); // Log de débogage
+    const beats = await beatsQuery.offset(offset).limit(limit);
+    console.log('Beats récupérés après pagination:', beats.length); // Log de débogage
+
+    const processedBeats = beats.map(beat => ({
+      ...beat,
+      tags: beat.tags_list ? (beat.tags_list as string).split(',') : [],
+      tags_list: undefined
+    }));
+
+    res.json({ beats: processedBeats, totalCount });
+  } catch (err) {
+    next(err);
+  }
+});
 //
 // router.get('/genres', async (req, res, next) => {
 //   try {
