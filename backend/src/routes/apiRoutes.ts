@@ -245,7 +245,7 @@ router.get('/debug-test', (req, res) => {
 
 // Debug route to test a simple copied file
 router.get('/debug-test-file', (req, res, next) => {
-    const filePath = path.join(process.cwd(), 'dist', 'backend', 'test.txt');
+    const filePath = path.join(process.cwd(), 'dist', 'test.txt');
     fs.readFile(filePath, (err, data) => {
         if (err) {
             console.error('Debug: Error reading test.txt:', err);
