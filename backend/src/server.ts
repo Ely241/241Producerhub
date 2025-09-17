@@ -32,13 +32,13 @@ app.use((req, res, next) => {
 });
 
 // Serve static files (audio and images)
-const publicAssetsPath = path.resolve(process.cwd(), 'public_assets'); // Chemin absolu vers le dossier des assets
-app.use('/audio', express.static(path.join(publicAssetsPath, 'audio'))); // Pour BIGSCARR, KEYGLOCK, CHIEFKEEF
-app.use('/audio/6trece', express.static(path.join(publicAssetsPath, '6trece'))); // Pour TRECE
-app.use('/images', express.static(path.join(publicAssetsPath, 'images')));
-app.use('/images', express.static(path.join(publicAssetsPath, '6trece')));
-app.use('/images', express.static(path.join(publicAssetsPath, 'assets'))); // Other root assets like hero-bg.jpg, logo.png
-app.use('/assets-optimized', express.static(path.join(publicAssetsPath, 'optimized/image'))); // Servir les images optimisées
+// const publicAssetsPath = path.resolve(process.cwd(), 'public_assets'); // Commenté car plus utilisé
+app.use('/audio', express.static(path.join(__dirname, 'assets/audio')));
+app.use('/audio/6trece', express.static(path.join(__dirname, 'assets/6trece')));
+app.use('/images', express.static(path.join(__dirname, 'assets/images')));
+app.use('/images', express.static(path.join(__dirname, 'assets/6trece')));
+app.use('/images', express.static(path.join(__dirname, 'assets'))); // Other root assets like hero-bg.jpg, logo.png
+app.use('/assets-optimized', express.static(path.join(__dirname, '../../public/assets-optimized/image'))); // Servir les images optimisées
 
 // API Routes
 app.use('/api', apiRoutes); // Utiliser le routeur importé
