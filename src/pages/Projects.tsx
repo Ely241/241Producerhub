@@ -28,7 +28,7 @@ const projectsData: ProjectData[] = [
     beatTitles: [
       'Inspiré de Big Scarr',
       'Inspiré de Key Glock',
-      'Inspiré de Tchief Keef',
+      'Inspiré de Chief Keef',
     ],
   },
   // Add more projects here as needed
@@ -72,7 +72,7 @@ const Projects = () => {
       const playlist = beatsToPlay.map(beat => ({
         ...beat,
         audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
-        imageSrc: `${API_BASE_URL}${beat.cover_image_url}`,
+                            imageSrc={beat.cover_image_url},
       }));
       playPlaylist(playlist, startIndex);
     }
@@ -116,6 +116,7 @@ const Projects = () => {
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12">
             {/* Album Cover */}
+            {console.log('Projects.tsx - Cover Image URL:', selectedProject.coverImage);}
             <motion.img
               src={selectedProject.coverImage}
               alt={selectedProject.title}
