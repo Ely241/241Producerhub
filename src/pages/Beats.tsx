@@ -75,7 +75,7 @@ const Beats = () => {
       const playlist = data.beats.map(beat => ({
         ...beat,
         audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
-        imageSrc: `${API_BASE_URL}${beat.cover_image_url}`,
+        imageSrc: beat.cover_image_url,
       }));
       playPlaylist(playlist, startIndex);
     }
