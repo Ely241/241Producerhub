@@ -9,28 +9,29 @@ const assetsToCopy = [
     { src: path.join(baseDir, 'src', 'assets', '6trece'), dest: path.join(distDir, 'backend', 'src', 'assets', '6trece') },
     { src: path.join(baseDir, 'src', 'assets', 'images'), dest: path.join(distDir, 'backend', 'src', 'assets', 'images') },
     { src: path.join(baseDir, 'public', 'assets-optimized', 'image'), dest: path.join(distDir, 'backend', 'public', 'assets-optimized', 'image') },
-    { src: path.join(baseDir, 'test.txt'), dest: path.join(distDir, 'backend', 'test.txt') },
+    { src: path.join(baseDir, 'test.txt'), dest: path.join(distDir, 'backend', 'test.txt') }, // New test file
+];
 
-function ensureDirExists(dirPath) {
+const ensureDirExists = (dirPath) => {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
     }
-}
+};
 
-function copyRecursiveSync(src, dest) {
+const copyRecursiveSync = (src, dest) => {
     const exists = fs.existsSync(src);
     const stats = exists && fs.statSync(src);
     const isDirectory = exists && stats.isDirectory();
     if (isDirectory) {
         ensureDirExists(dest);
-        fs.readdirSync(src).forEach(function(childItemName) {
+        fs.readdirSync(src).forEach((childItemName) => {
             copyRecursiveSync(path.join(src, childItemName),
                              path.join(dest, childItemName));
         });
     } else {
         fs.copyFileSync(src, dest);
     }
-}
+};
 
 assetsToCopy.forEach(({ src, dest }) => {
     console.log(`Copying from ${src} to ${dest}`);
