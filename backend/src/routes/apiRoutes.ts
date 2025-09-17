@@ -49,13 +49,15 @@ router.get('/beats', validate(beatsQuerySchema), async (req, res, next) => {
     const { q, genre, page, limit } = res.locals.validatedQuery as { q?: string, genre?: string, page: number, limit: number };
     const offset = (page - 1) * limit;
 
-    const groupConcatFn = getGroupConcatFunction(db.client.config.client);
+    const tagsAggregation = db.client.config.client === 'pg'
+    ? db.raw('STRING_AGG(tags.name, ?) as tags_list', [','])
+    : db.raw('GROUP_CONCAT(tags.name) as tags_list');
 
     let beatsQuery = db('beats')
       .select(
         'beats.*',
         'artists.name as artist_name',
-        db.raw(db.client.config.client === 'pg' ? 'STRING_AGG(tags.name, ?) as tags_list' : 'GROUP_CONCAT(tags.name) as tags_list', [','])
+        tagsAggregation
       )
       .leftJoin('artists', 'beats.artist_id', 'artists.id')
       .leftJoin('beat_tags', 'beats.id', 'beat_tags.beat_id')

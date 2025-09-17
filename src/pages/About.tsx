@@ -112,14 +112,14 @@ const About = () => {
                     Explorer les Beats
                   </Button>
                 </Link>
-                <Link to="/contact">
+                <a href="https://wa.me/24176505254" target="_blank" rel="noopener noreferrer">
                   <Button 
                     size="lg" 
                     className="bg-gradient-fire hover:scale-105 transition-transform glow-red"
                   >
                     Travailler Avec Moi
                   </Button>
-                </Link>
+                </a>
               </div>
             </CardContent>
           </Card>

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd dist && node backend/src/server.js",
-    "build": "tsc && npm run copy-assets && ls -la dist/",
-    "copy-assets": "mkdir -p dist/backend/src/assets/audio dist/backend/src/assets/6trece dist/backend/src/assets/images dist/backend/public/assets-optimized/image && cp -R ../src/assets/audio dist/backend/src/assets/audio && cp -R ../src/assets/6trece dist/backend/src/assets/6trece && cp -R ../src/assets/images dist/backend/src/assets/images && cp -R ../public/assets-optimized/image dist/backend/public/assets-optimized/image && ls -laR dist/backend/src/assets/audio",
+    "start": "node dist/backend/src/server.js",
+    "build": "tsc && npm run copy-assets",
+    "copy-assets": "mkdirp dist/backend/src/assets/audio dist/backend/src/assets/6trece dist/backend/src/assets/images dist/backend/public/assets-optimized/image && ncp ../src/assets/audio dist/backend/src/assets/audio && ncp ../src/assets/6trece dist/backend/src/assets/6trece && ncp ../src/assets/images dist/backend/src/assets/images && ncp ../public/assets-optimized/image dist/backend/public/assets-optimized/image",
     "optimize:images": "ts-node scripts/optimize-images.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -31,5 +31,9 @@
     "joi": "^18.0.1",
     "@types/joi": "^17.2.2",
     "@types/pg": "^8.11.6"
+  },
+  "devDependencies": {
+    "mkdirp": "^3.0.1",
+    "ncp": "^2.0.0"
   }
 }

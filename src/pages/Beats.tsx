@@ -97,8 +97,8 @@ const Beats = () => {
           <h1 className="font-metal text-5xl md:text-6xl text-primary text-glow mb-4">
             Bibliothèque de Beats
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Plonge dans le côté sombre du son. Beats premium créés avec une âme de métal et un feu urbain.
+          <p className="font-metal text-xl text-white max-w-2xl mx-auto">
+            welcome to my crib
           </p>
         </motion.div>
 

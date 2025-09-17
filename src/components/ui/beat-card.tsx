@@ -11,7 +11,6 @@ interface BeatCardProps {
   id: number;
   title: string;
   genre: string;
-  bpm: number;
   duration: string;
   price?: string;
   tags?: string[];
@@ -22,7 +21,7 @@ interface BeatCardProps {
 }
 
 const BeatCard = (beat: BeatCardProps) => {
-  const { id, title, genre, bpm, duration, price, tags = [], imageSrc, author, likes, onPlay } = beat;
+  const { id, title, genre, duration, price, tags = [], imageSrc, author, likes, onPlay } = beat;
   console.log(`BeatCard - Beat ID: ${id}, Title: ${title}, ImageSrc: ${imageSrc}`);
   const queryClient = useQueryClient();
 
@@ -90,8 +89,6 @@ const BeatCard = (beat: BeatCardProps) => {
               {author && <p className="text-sm text-muted-foreground">par {author}</p>}
               <div className="flex items-center space-x-4 text-sm text-muted-foreground mt-1">
                 <span>{genre}</span>
-                <span>•</span>
-                <span>{bpm} BPM</span>
                 <span>•</span>
                 <span>{duration}</span>
               </div>

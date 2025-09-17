@@ -23,7 +23,7 @@ const projectsData: ProjectData[] = [
   {
     id: 'one-years-ago',
     title: 'Projet ONE YEARS AGO',
-    description: 'Découvrez les productions phares de notre collection "ONE YEARS AGO".',
+    description: "Ces beats datent d'il y a un an, marquant mes débuts.",
     coverImage: '/assets-optimized/project-cover.png',
     beatTitles: [
       'Inspiré de Big Scarr',

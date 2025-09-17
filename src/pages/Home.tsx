@@ -11,8 +11,8 @@ import API_BASE_URL from '@/lib/api-client';
 
 const oneYearsAgoProject = {
   id: 'one-years-ago',
-  title: 'Projet ONE YEARS AGO',
-  description: 'Découvrez les productions phares de notre collection "ONE YEARS AGO".',
+  title: 'À LA UNE',
+  description: 'projet one years ago',
   coverImage: '/assets-optimized/project-cover.png',
   beats: [
     { title: 'Inspiré de Big Scarr', image: '/assets-optimized/image/BIGSCARR-PNG.webp' },
@@ -80,7 +80,7 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="font-metal text-6xl md:text-8xl text-primary text-glow mb-4 pulse-glow">
+            <h1 className="font-metal text-5xl sm:text-6xl md:text-8xl text-primary text-glow mb-4 pulse-glow">
               241 PRODUCER
             </h1>
 
@@ -91,16 +91,14 @@ const Home = () => {
               className="flex items-center justify-center my-2"
             >
               <div className="flex-grow border-t border-primary/30" />
-              <span className="mx-6 font-metal text-2xl text-primary/90 tracking-widest">BY</span>
+              <span className="mx-6 font-metal text-2xl text-white tracking-widest">BY</span>
               <div className="flex-grow border-t border-primary/30" />
             </motion.div>
 
-            <p className="font-metal text-3xl md:text-4xl text-primary/90 mb-8 tracking-wider">
+            <p className="font-metal text-2xl sm:text-3xl md:text-4xl text-primary/90 mb-8 tracking-wider">
               JYLSTHEPRODUCER
             </p>
-            <p className="text-lg text-foreground/80 max-w-2xl mx-auto mb-8">
-              welcome to my crib , chaque semaine je drop 1 ou 2 TYPE S
-            </p>
+            
           </motion.div>
 
           <motion.div
@@ -112,7 +110,7 @@ const Home = () => {
             <Link to="/beats">
               <Button 
                 size="lg" 
-                className="bg-gradient-fire hover:scale-105 transition-transform glow-red text-lg px-10 py-4"
+                className="bg-gradient-fire hover:scale-105 transition-transform glow-red text-lg px-6 md:px-10 py-4"
               >
                 <Music className="w-5 h-5 mr-2" />
                 Explorer les Beats
@@ -132,10 +130,10 @@ const Home = () => {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <h2 className="font-metal text-4xl md:text-5xl text-primary text-glow mb-4">
+            <h2 className="font-metal text-3xl sm:text-4xl md:text-5xl text-primary text-glow mb-4">
               {oneYearsAgoProject.title}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="font-metal text-lg text-white max-w-2xl mx-auto">
               {oneYearsAgoProject.description}
             </p>
           </motion.div>
@@ -178,23 +176,25 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mt-12"
           >
-            <Link to={`/projects/${oneYearsAgoProject.id}`}>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+              <Link to={`/projects/${oneYearsAgoProject.id}`}>
+                <Button
+                  size="lg"
+                  className="bg-gradient-fire hover:scale-105 transition-transform glow-red text-lg px-6 md:px-10 py-4"
+                >
+                  <Music className="w-5 h-5 mr-2" />
+                  Découvrir l'album
+                </Button>
+              </Link>
               <Button
                 size="lg"
-                className="bg-gradient-fire hover:scale-105 transition-transform glow-red text-lg px-10 py-4"
+                className="bg-gray-700 hover:bg-gray-800 transition-transform text-lg px-6 md:px-10 py-4"
+                onClick={handlePlayAlbum}
               >
-                <Music className="w-5 h-5 mr-2" />
-                Découvrir l'album
+                <PlayCircle className="w-5 h-5 mr-2" />
+                Écouter l'album
               </Button>
-            </Link>
-            <Button
-              size="lg"
-              className="ml-4 bg-gray-700 hover:bg-gray-800 transition-transform text-lg px-10 py-4"
-              onClick={handlePlayAlbum}
-            >
-              <PlayCircle className="w-5 h-5 mr-2" />
-              Écouter l'album
-            </Button>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -208,21 +208,21 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-metal text-3xl md:text-4xl text-primary text-glow mb-6">
+            <h2 className="font-metal text-2xl sm:text-3xl md:text-4xl text-primary text-glow mb-6">
               Prêt à Faire de la Musique ?
             </h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="font-metal text-lg text-white mb-8 max-w-2xl mx-auto">
               Connecte-toi avec 241 PRODUCER pour des beats sur mesure, des collaborations ou des licences. 
               Créons ensemble quelque chose de sombre et puissant.
             </p>
-            <Link to="/contact">
+            <a href="https://wa.me/24176505254" target="_blank" rel="noopener noreferrer">
               <Button 
                 size="lg" 
                 className="bg-gradient-fire hover:scale-105 transition-transform glow-red text-lg px-8 py-3"
               >
                 Prendre Contact
               </Button>
-            </Link>
+            </a>
           </motion.div>
         </div>
       </section>
