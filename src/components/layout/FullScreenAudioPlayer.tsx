@@ -54,11 +54,11 @@ const FullScreenAudioPlayer = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0, y: "100%" }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: "100%" }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center p-4"
       style={{
         backgroundImage: `url(${currentTrack.imageSrc || './placeholder.svg'})`,
         backgroundSize: 'cover',
@@ -72,7 +72,7 @@ const FullScreenAudioPlayer = () => {
         onClick={toggleFullScreen}
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 text-muted-foreground hover:text-primary"
+        className="absolute top-4 right-4 text-muted-foreground hover:text-primary z-20"
       >
         <X className="w-6 h-6" />
       </Button>
@@ -159,7 +159,7 @@ const FullScreenAudioPlayer = () => {
         </div>
 
         {/* Playlist Section (Right) */}
-        <div className="w-full lg:w-1/3 h-full bg-black/50 rounded-lg p-4 overflow-y-auto hidden lg:block">
+        <div className="w-full lg:w-1/3 h-full bg-black/50 rounded-lg p-4 overflow-y-auto">
             <h3 className="font-metal text-xl text-primary mb-4">Playlist en cours</h3>
             <div className="space-y-3">
                 {playlist.map((track, index) => (
@@ -190,4 +190,4 @@ const FullScreenAudioPlayer = () => {
   );
 };
 
-export default FullScreenAudioPlayer;
+export { FullScreenAudioPlayer };

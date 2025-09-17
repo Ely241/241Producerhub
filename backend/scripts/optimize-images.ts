@@ -3,8 +3,9 @@ import sharp from 'sharp';
 import fs from 'fs/promises';
 import path from 'path';
 
-const assetsDir = path.join(__dirname, '../../src/assets');
-const outputDir = path.join(__dirname, '../../public/assets-optimized');
+const projectRoot = path.resolve(process.cwd(), '..'); // Go up from backend/ to project root
+const assetsDir = path.join(projectRoot, 'src', 'assets');
+const outputDir = path.join(projectRoot, 'public', 'assets-optimized');
 
 async function optimizeImages(dir: string, outDir: string) {
   try {
@@ -19,7 +20,6 @@ async function optimizeImages(dir: string, outDir: string) {
         await optimizeImages(srcPath, outPath);
       } else if (entry.isFile() && /\.(jpe?g|png)$/i.test(entry.name)) {
         const newPath = outPath.replace(/\.[^/.]+$/, ".webp");
-        console.log(`Optimizing ${srcPath} -> ${newPath}`);
         await sharp(srcPath)
           .webp({ quality: 80 })
           .toFile(newPath);
@@ -30,10 +30,9 @@ async function optimizeImages(dir: string, outDir: string) {
   }
 }
 
-console.log('Starting image optimization...');
 optimizeImages(assetsDir, outputDir)
   .then(() => {
-    console.log('Image optimization complete!');
+    // console.log('Image optimization complete!'); // Removed
   })
   .catch(error => {
     console.error('Image optimization failed:', error);

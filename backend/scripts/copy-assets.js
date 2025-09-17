@@ -1,15 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const baseDir = path.resolve(__dirname, '..', '..'); // Points to backend/
-const distDir = path.join(baseDir, 'dist'); // Points to backend/dist/
+const projectRoot = path.resolve(__dirname, '..', '..'); // Points to C:\Users\Yvesj\Documents\jyls-241-beats-blast-main
+const backendDir = path.resolve(__dirname, '..'); // Points to C:\Users\Yvesj\Documents\jyls-241-beats-blast-main\backend
+
+const publicAssetsDir = path.join(backendDir, 'dist', 'public_assets'); // Points to backend/dist/public_assets
 
 const assetsToCopy = [
-    { src: path.join(baseDir, 'src', 'assets', 'audio'), dest: path.join(distDir, 'backend', 'src', 'assets', 'audio') },
-    { src: path.join(baseDir, 'src', 'assets', '6trece'), dest: path.join(distDir, 'backend', 'src', 'assets', '6trece') },
-    { src: path.join(baseDir, 'src', 'assets', 'images'), dest: path.join(distDir, 'backend', 'src', 'assets', 'images') },
-    { src: path.join(baseDir, 'public', 'assets-optimized', 'image'), dest: path.join(distDir, 'backend', 'public', 'assets-optimized', 'image') },
-    { src: path.join(process.cwd(), 'test.txt'), dest: path.join(distDir, 'test.txt') }, // New test file
+    { src: path.join(projectRoot, 'src', 'assets', 'audio'), dest: path.join(publicAssetsDir, 'audio') },
+    { src: path.join(projectRoot, 'src', 'assets', '6trece'), dest: path.join(publicAssetsDir, '6trece') },
+    { src: path.join(projectRoot, 'src', 'assets', 'images'), dest: path.join(publicAssetsDir, 'images') },
+    { src: path.join(projectRoot, 'public', 'assets-optimized', 'image'), dest: path.join(publicAssetsDir, 'assets-optimized', 'image') },
 ];
 
 const ensureDirExists = (dirPath) => {
@@ -34,8 +35,5 @@ const copyRecursiveSync = (src, dest) => {
 };
 
 assetsToCopy.forEach(({ src, dest }) => {
-    console.log(`Copying from ${src} to ${dest}`);
     copyRecursiveSync(src, dest);
 });
-
-console.log('Asset copying complete.');

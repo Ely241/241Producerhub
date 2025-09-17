@@ -106,7 +106,7 @@ const Projects = () => {
     const projectBeats = allBeats?.filter(beat => selectedProject.beatTitles.includes(beat.title)) || [];
     const albumArtist = "JYLSTHEPRODUCER"; // Hardcoded for now
 
-    console.log('Projects.tsx - Cover Image URL:', selectedProject.coverImage); // Déplacé ici
+    
 
     return (
       <div className="min-h-screen pt-16 relative">
@@ -158,7 +158,7 @@ const Projects = () => {
                     id={beat.id}
                     title={beat.title}
                     genre={beat.genre || 'N/A'}
-                    bpm={beat.bpm || 0}
+                    
                     duration={beat.duration || 'N/A'}
                     price={beat.price ? beat.price.toFixed(2) : 'Écoute seule'}
                     tags={beat.tags || []}

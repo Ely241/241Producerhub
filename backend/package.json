@@ -5,9 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/backend/src/server.js",
-    "build": "tsc && npm run copy-assets",
+    "build": "tsc && npm run copy-assets && npm run optimize:images-build",
     "copy-assets": "node scripts/copy-assets.js",
     "optimize:images": "ts-node scripts/optimize-images.ts",
+        "optimize:images-build": "ts-node scripts/optimize-images.ts",
+    "db:migrate": "knex migrate:latest",
+    "db:seed": "knex seed:run",
+    "prestart": "npm run db:migrate && npm run db:seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

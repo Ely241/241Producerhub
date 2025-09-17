@@ -5,7 +5,7 @@
     "artist_id": 1,
     "price": 0.00,
     "cover_image_url": "/assets-optimized/6trece/SIXTRECEEE.webp",
-    "audio_file_url": "/audio/6trece/TRECE.mp3",
+    "audio_file_url": "/audio/TRECE.mp3",
     "genre": "Trap",
     "duration": "2:55",
     "author": "JYLSTHEPRODUCER",
@@ -20,7 +20,7 @@
     "cover_image_url": "/assets-optimized/image/BIGSCARR-PNG.webp",
     "audio_file_url": "/audio/BIGSCARR-BEAT.mp3",
     "genre": "Trap",
-    "duration": "2:22",
+    "duration": "2:21",
     "author": "JYLSTHEPRODUCER",
     "tags": ["Trap", "Dark", "Aggressive"],
     "likes": 0
@@ -33,7 +33,7 @@
     "cover_image_url": "/assets-optimized/image/KEYGLOCK-PNG.webp",
     "audio_file_url": "/audio/KEYGLOCK-BEAT.mp3",
     "genre": "Trap",
-    "duration": "4:27",
+    "duration": "4:21",
     "author": "JYLSTHEPRODUCER",
     "tags": ["Trap", "Energetic", "Hard"],
     "likes": 0

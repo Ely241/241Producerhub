@@ -6,7 +6,9 @@ import path from 'path';
 import dotenv from 'dotenv';
 import apiRoutes from './routes/apiRoutes'; // Importer le nouveau routeur
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../../../..', '.env') });
+
+const distRoot = path.join(__dirname, '..', '..'); // Points to backend/dist
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -23,58 +25,40 @@ app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
     "default-src 'self'; " +
-    "img-src 'self' data: https://two41producerhub-1.onrender.com; " + 
-    "media-src 'self' https://two41producerhub-1.onrender.com; " + 
+    `img-src 'self' data: ${process.env.FRONTEND_URL}; ` +
+    `media-src 'self' ${process.env.FRONTEND_URL}; ` +
     "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " + 
     "style-src 'self' 'unsafe-inline';"
   );
   next();
 });
 
-// Serve static files (audio and images)
-// const publicAssetsPath = path.resolve(process.cwd(), 'public_assets'); // Commenté car plus utilisé
-// Custom audio serving to bypass express.static issues
-app.get('/audio/:filename', (req, res, next) => {
-  const filename = req.params.filename;
-  const filePath = path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', 'audio', filename);
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      console.error('Error sending audio file:', err);
-      next(err);
-    }
-  });
-});
-
-app.get('/audio/6trece/:filename', (req, res, next) => {
-  const filename = req.params.filename;
-  const filePath = path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', '6trece', filename);
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      console.error('Error sending 6trece audio file:', err);
-      next(err);
-    }
-  });
-});
-app.use('/images', express.static(path.join(__dirname, 'assets/images')));
-app.use('/images', express.static(path.join(__dirname, 'assets/6trece')));
-app.use('/images', express.static(path.join(__dirname, 'assets'))); // Other root assets like hero-bg.jpg, logo.png
-app.use('/assets-optimized', express.static(path.join(__dirname, '../../public/assets-optimized/image'))); // Servir les images optimisées
+// Serve static files from a consolidated public_assets directory
+const publicAssetsPath = path.join(distRoot, 'public_assets');
+app.use(express.static(publicAssetsPath));
 
 // API Routes
-app.use('/api', apiRoutes); // Utiliser le routeur importé
+app.use('/api', apiRoutes(db)); // Utiliser le routeur importé
 
-// Gérer toutes les autres requêtes en renvoyant l'application frontend
-// Gérer toutes les autres requêtes en renvoyant l'application frontend
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../../dist', 'index.html'));
-// });
+
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack); // Log the error stack for debugging
-  res.status(500).json({
-    message: 'An unexpected error occurred',
-    error: process.env.NODE_ENV === 'development' ? err.message : {} // Only send error message in development
+  console.error(err.stack); // Always log the error stack for debugging
+
+  // Determine the status code and message
+  let statusCode = 500;
+  let message = 'An unexpected server error occurred.';
+
+  // For development, send more detailed error information
+  if (process.env.NODE_ENV === 'development') {
+    message = err.message || message; // Use error message if available
+  }
+
+  res.status(statusCode).json({
+    message: message,
+    // Optionally, send the full error object in development for more details
+    ...(process.env.NODE_ENV === 'development' && { error: err.message })
   });
 });
 

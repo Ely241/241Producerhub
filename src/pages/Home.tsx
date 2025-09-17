@@ -6,6 +6,7 @@ import { useAudio } from '@/context/use-audio';
 import type { Beat } from '@shared/types';
 import { useQuery } from '@tanstack/react-query';
 import API_BASE_URL from '@/lib/api-client';
+import { useState, useEffect, useRef } from 'react';
 
 
 
@@ -24,14 +25,11 @@ const oneYearsAgoProject = {
 const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.beats): Promise<Beat[]> => {
   const beatIds = projectBeatsConfig.map(b => b.id);
   const requestUrl = `${API_BASE_URL}/api/beats?limit=100`;
-  console.log('Home.tsx - Requête API beats:', requestUrl);
   const res = await fetch(requestUrl); 
-  console.log('Home.tsx - Réponse API beats OK:', res.ok, 'Statut:', res.status);
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
   const data = await res.json();
-  console.log(`Home.tsx - Beats bruts de l'API:`, data.beats);
   const processedBeats = data.beats
     .filter((beat: Beat) => beatIds.includes(beat.id))
     .map((beat: Beat) => {
@@ -41,12 +39,35 @@ const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.b
         imageSrc: localBeat ? localBeat.image : beat.cover_image_url, // Use local image if available
       };
     });
-  console.log('Home.tsx - Project Beats après filtre et map:', processedBeats);
   return processedBeats;
 };
 
 const Home = () => {
   const { playPlaylist } = useAudio();
+
+  const texts = ['BIBOYSKI', 'CAPTAIN DOOBIE', 'BROCO BOI', 'MIGOS', 'SALAZAR'];
+  const [activeTexts, setActiveTexts] = useState<Array<{ id: number; text: string; x: number; y: number; }>>([]);
+  const textIdCounter = useRef(0);
+
+  useEffect(() => {
+    const addTextInterval = setInterval(() => {
+      const randomText = texts[Math.floor(Math.random() * texts.length)];
+      const newText = {
+        id: textIdCounter.current++,
+        text: randomText,
+        x: 10 + Math.random() * 80, // From 10% to 90%
+        y: 10 + Math.random() * 80, // From 10% to 90%
+      };
+      setActiveTexts((prev) => [...prev, newText]);
+
+      // Remove text after a duration (e.g., 5 seconds)
+      setTimeout(() => {
+        setActiveTexts((prev) => prev.filter((t) => t.id !== newText.id));
+      }, 5000);
+    }, 1000); // Add a new text every 1 second
+
+    return () => clearInterval(addTextInterval);
+  }, []);
 
   const { data: projectBeats, isLoading, isError, error } = useQuery<Beat[], Error>({
     queryKey: ['oneYearsAgoBeats', oneYearsAgoProject.beats.map(b => b.title)],
@@ -66,7 +87,25 @@ const Home = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      
+      {/* Randomly appearing/disappearing texts in the background */}
+      {activeTexts.map((item) => (
+        <motion.div
+          key={item.id}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 0.1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          transition={{ duration: 1 }}
+          className="absolute text-white font-metal text-3xl md:text-5xl lg:text-7xl whitespace-nowrap pointer-events-none"
+          style={{
+            left: `${item.x}%`,
+            top: `${item.y}%`,
+            transform: 'translate(-50%, -50%)',
+            zIndex: 0, // Ensure it's in the background
+          }}
+        >
+          {item.text}
+        </motion.div>
+      ))}
       
       {/* Hero Section */}
       <section 
@@ -155,9 +194,7 @@ const Home = () => {
             ) : isError ? (
               <p className="absolute inset-0 flex items-center justify-center text-red-500 z-0">Erreur de chargement des beats.</p>
             ) : (
-              console.log('Home.tsx - projectBeats avant rendu:', projectBeats), // Ajout du log
               projectBeats && projectBeats.map((beat, index) => (
-                console.log(`Home.tsx - Rendu du beat ${beat.title}, imageSrc: ${beat.imageSrc || beat.cover_image_url || './placeholder.svg'}`), // Ajout du log
                 <img
                   key={beat.id}
                   src={beat.imageSrc || beat.cover_image_url || './placeholder.svg'}
@@ -166,7 +203,6 @@ const Home = () => {
                 />
               ))
             )}
-
           </div>
 
           <motion.div

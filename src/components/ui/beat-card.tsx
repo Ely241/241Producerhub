@@ -22,7 +22,6 @@ interface BeatCardProps {
 
 const BeatCard = (beat: BeatCardProps) => {
   const { id, title, genre, duration, price, tags = [], imageSrc, author, likes, onPlay } = beat;
-  console.log(`BeatCard - Beat ID: ${id}, Title: ${title}, ImageSrc: ${imageSrc}`);
   const queryClient = useQueryClient();
 
   const [likeCount, setLikeCount] = useState(likes);
@@ -122,7 +121,15 @@ const BeatCard = (beat: BeatCardProps) => {
                 </Button>
             )}
             <Button onClick={handleLike} variant="outline" className="flex items-center gap-2 group/like">
-                <Heart className={`w-4 h-4 transition-colors ${isLiked ? 'text-red-500 fill-current' : 'text-muted-foreground group-hover/like:text-primary'}`} />
+                <motion.div
+                    key={isLiked ? "liked" : "unliked"} // Key to re-trigger animation on state change
+                    initial={{ scale: 1 }}
+                    animate={{ scale: isLiked ? [1, 1.2, 1] : 1 }} // Bounce effect when liked
+                    transition={{ duration: 0.3, type: "spring", stiffness: 300 }}
+                    whileTap={{ scale: 0.9 }} // Shrink on tap
+                >
+                    <Heart className={`w-4 h-4 transition-colors ${isLiked ? 'text-red-500 fill-current' : 'text-muted-foreground group-hover/like:text-primary'}`} />
+                </motion.div>
                 <span className="text-muted-foreground group-hover/like:text-primary transition-colors">{likeCount}</span>
             </Button>
           </div>
