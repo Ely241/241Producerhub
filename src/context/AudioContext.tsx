@@ -13,6 +13,7 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const preloadAudioRef = useRef<HTMLAudioElement>(null); // New ref for preloading
   const prevVolume = useRef(1);
 
   const currentTrack = currentTrackIndex !== null ? playlist[currentTrackIndex] : null;
@@ -107,6 +108,19 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  useEffect(() => {
+    if (currentTrackIndex !== null && playlist.length > 0) {
+      const nextIndex = (currentTrackIndex + 1) % playlist.length;
+      const nextTrack = playlist[nextIndex];
+
+      if (preloadAudioRef.current && nextTrack && nextTrack.audioSrc) {
+        preloadAudioRef.current.src = nextTrack.audioSrc;
+        preloadAudioRef.current.load(); // Start loading the next track
+        console.log('Preloading next track:', nextTrack.title);
+      }
+    }
+  }, [currentTrackIndex, playlist]); // Re-run when current track changes or playlist updates
+
   return (
     <AudioContext.Provider value={{ 
       currentTrack, 
@@ -148,6 +162,8 @@ export const AudioProvider = ({ children }: { children: ReactNode }) => {
         onCanPlayThrough={() => setIsLoading(false)}
         autoPlay
       />
+      {/* Hidden audio element for preloading */}
+      <audio ref={preloadAudioRef} style={{ display: 'none' }} />
     </AudioContext.Provider>
   );
 };

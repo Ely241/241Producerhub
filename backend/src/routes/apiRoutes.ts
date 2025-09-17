@@ -107,5 +107,10 @@ router.get('/genres', async (req, res, next) => {
   }
 });
 
+  // Ping route to keep the server awake
+  router.get('/ping', (req, res) => {
+    res.status(200).send('pong');
+  });
+
   return router;
 };
