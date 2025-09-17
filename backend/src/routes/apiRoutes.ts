@@ -238,4 +238,9 @@ router.get('/debug-readme', (req, res, next) => {
     });
 });
 
+// Simple debug test route
+router.get('/debug-test', (req, res) => {
+    res.send('Debug test route works!');
+});
+
 export default router;
