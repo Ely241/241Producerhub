@@ -72,7 +72,7 @@ const Projects = () => {
       const playlist = beatsToPlay.map(beat => ({
         ...beat,
         audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
-                            imageSrc={beat.cover_image_url},
+                            imageSrc: beat.cover_image_url,
       }));
       playPlaylist(playlist, startIndex);
     }
