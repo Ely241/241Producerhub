@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/backend/src/server.js",
     "build": "tsc && npm run copy-assets",
-    "copy-assets": "node_modules/.bin/mkdirp dist/backend/src/assets/audio dist/backend/src/assets/6trece dist/backend/src/assets/images dist/backend/public/assets-optimized/image && node_modules/.bin/ncp ../src/assets/audio dist/backend/src/assets/audio && node_modules/.bin/ncp ../src/assets/6trece dist/backend/src/assets/6trece && node_modules/.bin/ncp ../src/assets/images dist/backend/src/assets/images && node_modules/.bin/ncp ../public/assets-optimized/image dist/backend/public/assets-optimized/image",
+    "copy-assets": "npx mkdirp dist/backend/src/assets/audio dist/backend/src/assets/6trece dist/backend/src/assets/images dist/backend/public/assets-optimized/image && npx ncp ../src/assets/audio dist/backend/src/assets/audio && npx ncp ../src/assets/6trece dist/backend/src/assets/6trece && npx ncp ../src/assets/images dist/backend/src/assets/images && npx ncp ../public/assets-optimized/image dist/backend/public/assets-optimized/image",
     "optimize:images": "ts-node scripts/optimize-images.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
