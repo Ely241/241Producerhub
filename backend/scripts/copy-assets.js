@@ -9,7 +9,7 @@ const assetsToCopy = [
     { src: path.join(baseDir, 'src', 'assets', '6trece'), dest: path.join(distDir, 'backend', 'src', 'assets', '6trece') },
     { src: path.join(baseDir, 'src', 'assets', 'images'), dest: path.join(distDir, 'backend', 'src', 'assets', 'images') },
     { src: path.join(baseDir, 'public', 'assets-optimized', 'image'), dest: path.join(distDir, 'backend', 'public', 'assets-optimized', 'image') },
-];
+    { src: path.join(baseDir, 'test.txt'), dest: path.join(distDir, 'backend', 'test.txt') },
 
 function ensureDirExists(dirPath) {
     if (!fs.existsSync(dirPath)) {

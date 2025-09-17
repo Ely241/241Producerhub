@@ -243,4 +243,16 @@ router.get('/debug-test', (req, res) => {
     res.send('Debug test route works!');
 });
 
+// Debug route to test a simple copied file
+router.get('/debug-test-file', (req, res, next) => {
+    const filePath = path.join(process.cwd(), 'dist', 'backend', 'test.txt');
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            console.error('Debug: Error reading test.txt:', err);
+            return res.status(500).json({ error: 'Failed to read test.txt', details: err.message, path: filePath });
+        }
+        res.send(data.toString());
+    });
+});
+
 export default router;
