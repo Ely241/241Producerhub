@@ -118,7 +118,6 @@ const Projects = () => {
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12">
             {/* Album Cover */}
-            {console.log('Projects.tsx - Cover Image URL:', selectedProject.coverImage);}
             <motion.img
               src={selectedProject.coverImage}
               alt={selectedProject.title}
