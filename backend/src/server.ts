@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 // Custom audio serving to bypass express.static issues
 app.get('/audio/:filename', (req, res, next) => {
   const filename = req.params.filename;
-  const filePath = path.join(process.cwd(), 'dist', 'src', 'assets', 'audio', filename);
+  const filePath = path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', 'audio', filename);
   res.sendFile(filePath, (err) => {
     if (err) {
       console.error('Error sending audio file:', err);
@@ -47,7 +47,7 @@ app.get('/audio/:filename', (req, res, next) => {
 
 app.get('/audio/6trece/:filename', (req, res, next) => {
   const filename = req.params.filename;
-  const filePath = path.join(process.cwd(), 'dist', 'src', 'assets', '6trece', filename);
+  const filePath = path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', '6trece', filename);
   res.sendFile(filePath, (err) => {
     if (err) {
       console.error('Error sending 6trece audio file:', err);
