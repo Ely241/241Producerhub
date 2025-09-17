@@ -33,8 +33,28 @@ app.use((req, res, next) => {
 
 // Serve static files (audio and images)
 // const publicAssetsPath = path.resolve(process.cwd(), 'public_assets'); // Commenté car plus utilisé
-app.use('/audio', express.static(path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', 'audio')));
-app.use('/audio/6trece', express.static(path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', '6trece')));
+// Custom audio serving to bypass express.static issues
+app.get('/audio/:filename', (req, res, next) => {
+  const filename = req.params.filename;
+  const filePath = path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', 'audio', filename);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error sending audio file:', err);
+      next(err);
+    }
+  });
+});
+
+app.get('/audio/6trece/:filename', (req, res, next) => {
+  const filename = req.params.filename;
+  const filePath = path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', '6trece', filename);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error sending 6trece audio file:', err);
+      next(err);
+    }
+  });
+});
 app.use('/images', express.static(path.join(__dirname, 'assets/images')));
 app.use('/images', express.static(path.join(__dirname, 'assets/6trece')));
 app.use('/images', express.static(path.join(__dirname, 'assets'))); // Other root assets like hero-bg.jpg, logo.png
