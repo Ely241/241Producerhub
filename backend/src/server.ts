@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 
 // Serve static files (audio and images)
 // const publicAssetsPath = path.resolve(process.cwd(), 'public_assets'); // Commenté car plus utilisé
-app.use('/audio', express.static(path.join(__dirname, 'assets/audio')));
+app.use('/audio', express.static(path.join(__dirname, 'assets/audio/audio')));
 app.use('/audio/6trece', express.static(path.join(__dirname, 'assets/6trece/6trece')));
 app.use('/images', express.static(path.join(__dirname, 'assets/images')));
 app.use('/images', express.static(path.join(__dirname, 'assets/6trece')));
