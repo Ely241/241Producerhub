@@ -15,14 +15,14 @@ const oneYearsAgoProject = {
   description: 'projet one years ago',
   coverImage: '/assets-optimized/project-cover.png',
   beats: [
-    { title: 'Inspiré de Big Scarr', image: '/assets-optimized/image/BIGSCARR-PNG.webp' },
-    { title: 'Inspiré de Key Glock', image: '/assets-optimized/image/KEYGLOCK-PNG.webp' },
-    { title: 'Inspiré de Chief Keef', image: '/assets-optimized/image/CHIEFKEEF-PNG.webp' },
+    { id: 2, title: 'Inspiré de Big Scarr', image: '/assets-optimized/image/BIGSCARR-PNG.webp' },
+    { id: 3, title: 'Inspiré de Key Glock', image: '/assets-optimized/image/KEYGLOCK-PNG.webp' },
+    { id: 4, title: 'Inspiré de Chief Keef', image: '/assets-optimized/image/CHIEFKEEF-PNG.webp' },
   ],
 };
 
 const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.beats): Promise<Beat[]> => {
-  const beatTitles = projectBeatsConfig.map(b => b.title);
+  const beatIds = projectBeatsConfig.map(b => b.id);
   const requestUrl = `${API_BASE_URL}/api/beats?limit=100`;
   console.log('Home.tsx - Requête API beats:', requestUrl);
   const res = await fetch(requestUrl); 
@@ -33,9 +33,9 @@ const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.b
   const data = await res.json();
   console.log(`Home.tsx - Beats bruts de l'API:`, data.beats);
   const processedBeats = data.beats
-    .filter((beat: Beat) => beatTitles.includes(beat.title))
+    .filter((beat: Beat) => beatIds.includes(beat.id))
     .map((beat: Beat) => {
-      const localBeat = projectBeatsConfig.find(b => b.title === beat.title);
+      const localBeat = projectBeatsConfig.find(b => b.id === beat.id);
       return {
         ...beat,
         imageSrc: localBeat ? localBeat.image : beat.cover_image_url, // Use local image if available
