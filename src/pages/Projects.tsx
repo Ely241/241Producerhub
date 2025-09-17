@@ -106,25 +106,9 @@ const Projects = () => {
     const projectBeats = allBeats?.filter(beat => selectedProject.beatTitles.includes(beat.title)) || [];
     const albumArtist = "JYLSTHEPRODUCER"; // Hardcoded for now
 
-    return (
-      <div className="min-h-screen pt-16 relative">
-        <ParticleBackground />
-        <div className="relative z-10 container mx-auto px-4 py-12">
-          <Button onClick={() => navigate('/projects')} variant="ghost" className="text-muted-foreground hover:text-primary mb-8">
-            <ArrowLeft className="w-5 h-5 mr-2" /> Retour aux projets
-          </Button>
+    console.log('Projects.tsx - Cover Image URL:', selectedProject.coverImage); // Déplacé ici
 
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12">
-            {/* Album Cover */}
-            {console.log('Projects.tsx - Cover Image URL:', selectedProject.coverImage);}
-            <motion.img
-              src={selectedProject.coverImage}
-              alt={selectedProject.title}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="w-full max-w-xs md:max-w-sm rounded-lg shadow-lg metal-border object-cover object-top"
-            />
+    return (
             {/* Project Info */}
             <div className="text-center md:text-left flex-grow">
               <h1 className="font-metal text-4xl md:text-5xl text-primary text-glow mb-2">
