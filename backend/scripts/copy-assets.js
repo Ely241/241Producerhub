@@ -9,7 +9,7 @@ const assetsToCopy = [
     { src: path.join(baseDir, 'src', 'assets', '6trece'), dest: path.join(distDir, 'backend', 'src', 'assets', '6trece') },
     { src: path.join(baseDir, 'src', 'assets', 'images'), dest: path.join(distDir, 'backend', 'src', 'assets', 'images') },
     { src: path.join(baseDir, 'public', 'assets-optimized', 'image'), dest: path.join(distDir, 'backend', 'public', 'assets-optimized', 'image') },
-    { src: path.join(process.cwd(), 'test.txt'), dest: path.join(distDir, 'backend', 'test.txt') }, // New test file
+    { src: path.join(process.cwd(), 'test.txt'), dest: path.join(distDir, 'test.txt') }, // New test file
 ];
 
 const ensureDirExists = (dirPath) => {
