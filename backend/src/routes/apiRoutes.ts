@@ -219,10 +219,22 @@ router.get('/debug-audio/:filename', (req, res, next) => {
     const filePath = path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', 'audio', filename);
     fs.readFile(filePath, (err, data) => {
         if (err) {
-            console.error('Debug: Error reading audio file:', err);
+            console.error('Error sending audio file:', err);
             return res.status(500).json({ error: 'Failed to read file', details: err.message, path: filePath });
         }
         res.json({ message: 'File found and readable', filename: filename, size: data.length, path: filePath });
+    });
+});
+
+// Debug route to check README.md existence and readability
+router.get('/debug-readme', (req, res, next) => {
+    const filePath = path.join(process.cwd(), 'README.md');
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            console.error('Debug: Error reading README.md:', err);
+            return res.status(500).json({ error: 'Failed to read README.md', details: err.message, path: filePath });
+        }
+        res.send(data.toString());
     });
 });
 
