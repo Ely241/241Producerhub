@@ -5,10 +5,10 @@ const baseDir = path.resolve(__dirname, '..', '..'); // Points to backend/
 const distDir = path.join(baseDir, 'dist'); // Points to backend/dist/
 
 const assetsToCopy = [
-    { src: path.join(baseDir, 'src', 'assets', 'audio'), dest: path.join(distDir, 'backend', 'src', 'assets', 'audio') },
-    { src: path.join(baseDir, 'src', 'assets', '6trece'), dest: path.join(distDir, 'backend', 'src', 'assets', '6trece') },
-    { src: path.join(baseDir, 'src', 'assets', 'images'), dest: path.join(distDir, 'backend', 'src', 'assets', 'images') },
-    { src: path.join(baseDir, 'public', 'assets-optimized', 'image'), dest: path.join(distDir, 'backend', 'public', 'assets-optimized', 'image') },
+    { src: path.join(baseDir, 'src', 'assets', 'audio'), dest: path.join(distDir, 'src', 'assets', 'audio') },
+    { src: path.join(baseDir, 'src', 'assets', '6trece'), dest: path.join(distDir, 'src', 'assets', '6trece') },
+    { src: path.join(baseDir, 'src', 'assets', 'images'), dest: path.join(distDir, 'src', 'assets', 'images') },
+    { src: path.join(baseDir, 'public', 'assets-optimized', 'image'), dest: path.join(distDir, 'public', 'assets-optimized', 'image') },
 ];
 
 function ensureDirExists(dirPath) {
