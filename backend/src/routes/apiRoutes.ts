@@ -4,6 +4,8 @@ import knexConfig from '../../knexfile';
 import type { Beat } from '@shared/types';
 import Joi from 'joi';
 import crypto from 'crypto'; // Nécessaire pour la route /api/click
+import fs from 'fs'; // For debug route
+import path from 'path'; // For debug route
 
 const router = express.Router();
 
@@ -210,4 +212,18 @@ router.get('/genres', async (req, res, next) => {
 // });
 
 console.log('apiRoutes initialized with test route.');
+
+// Debug route to check audio file existence and readability
+router.get('/debug-audio/:filename', (req, res, next) => {
+    const filename = req.params.filename;
+    const filePath = path.join(process.cwd(), 'dist', 'backend', 'src', 'assets', 'audio', filename);
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            console.error('Debug: Error reading audio file:', err);
+            return res.status(500).json({ error: 'Failed to read file', details: err.message, path: filePath });
+        }
+        res.json({ message: 'File found and readable', filename: filename, size: data.length, path: filePath });
+    });
+});
+
 export default router;
