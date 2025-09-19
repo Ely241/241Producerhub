@@ -9,7 +9,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, PlayCircle, Loader } from 'lucide-react';
-import API_BASE_URL from '@/lib/api-client';
+import { supabase } from '@/lib/supabaseClient';
+
 
 interface ProjectData {
   id: string;
@@ -36,12 +37,16 @@ const projectsData: ProjectData[] = [
 
 // Function to fetch all beats needed for all projects
 const fetchAllProjectBeats = async (allBeatTitles: string[]): Promise<Beat[]> => {
-  const res = await fetch(`${API_BASE_URL}/api/beats?limit=100`); 
-  if (!res.ok) {
-    throw new Error('Network response was not ok');
+  const { data, error } = await supabase
+    .from('beats')
+    .select('*') // Select all fields, including cover_image_url and audio_file_url
+    .in('title', allBeatTitles);
+
+  if (error) {
+    throw new Error(error.message);
   }
-  const data = await res.json();
-  return data.beats.filter((beat: Beat) => allBeatTitles.includes(beat.title));
+
+  return data;
 };
 
 const Projects = () => {
@@ -71,8 +76,7 @@ const Projects = () => {
     if (beatsToPlay) {
       const playlist = beatsToPlay.map(beat => ({
         ...beat,
-        audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
-                            imageSrc: beat.cover_image_url,
+        audioSrc: beat.audio_file_url,
       }));
       playPlaylist(playlist, startIndex);
     }

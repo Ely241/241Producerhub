@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import { useAudio } from '@/context/use-audio';
 import type { Beat } from '@shared/types';
 import { useQuery } from '@tanstack/react-query';
-import API_BASE_URL from '@/lib/api-client';
+import { supabase } from '@/lib/supabaseClient';
+
 import { useState, useEffect, useRef } from 'react';
 
 
@@ -24,19 +25,26 @@ const oneYearsAgoProject = {
 
 const fetchProjectBeats = async (projectBeatsConfig: typeof oneYearsAgoProject.beats): Promise<Beat[]> => {
   const beatIds = projectBeatsConfig.map(b => b.id);
-  const requestUrl = `${API_BASE_URL}/api/beats?limit=100`;
-  const res = await fetch(requestUrl); 
-  if (!res.ok) {
-    throw new Error('Network response was not ok');
+
+  const { data, error } = await supabase
+    .from('beats')
+    .select('*') // Select all fields, including cover_image_url and audio_file_url
+    .in('id', beatIds);
+
+  if (error) {
+    throw new Error(error.message);
   }
-  const data = await res.json();
-  const processedBeats = data.beats
-    .filter((beat: Beat) => beatIds.includes(beat.id))
+
+  const processedBeats = data
     .map((beat: Beat) => {
-      const localBeat = projectBeatsConfig.find(b => b.id === beat.id);
+      // Find the corresponding local config to potentially merge data or ensure order
+      const localBeatConfig = projectBeatsConfig.find(b => b.id === beat.id);
       return {
         ...beat,
-        imageSrc: localBeat ? localBeat.image : beat.cover_image_url, // Use local image if available
+        // imageSrc should now come directly from beat.cover_image_url from Supabase
+        // If localBeatConfig had specific overrides, they would go here,
+        // but for now, we assume Supabase provides the correct URL.
+        imageSrc: beat.cover_image_url, // Use the URL directly from Supabase
       };
     });
   return processedBeats;
@@ -78,8 +86,7 @@ const Home = () => {
     if (projectBeats && projectBeats.length > 0) {
       const playlist = projectBeats.map(beat => ({
         ...beat,
-        audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
-        imageSrc: beat.imageSrc || beat.cover_image_url, // Use the merged imageSrc
+        audioSrc: beat.audio_file_url,        imageSrc: beat.imageSrc || beat.cover_image_url, // Use the merged imageSrc
       }));
       playPlaylist(playlist, 0); // Play from the first track
     }

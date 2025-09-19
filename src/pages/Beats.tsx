@@ -9,7 +9,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { useAudio } from '@/context/use-audio'; // Import useAudio hook
-import API_BASE_URL from '@/lib/api-client';
+import { supabase } from '@/lib/supabaseClient';
+
+
+interface BeatWithDetails extends Beat {
+  artist_name: string;
+  tags: string[];
+}
 
 // Custom hook for debouncing
 function useDebounce<T>(value: T, delay: number): T {
@@ -25,27 +31,62 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
-const fetchBeats = async (query: string, genre: string, page: number, limit: number): Promise<{beats: Beat[], totalCount: number}> => {
-  const params = new URLSearchParams();
-  if (query) params.append('q', query);
-  if (genre) params.append('genre', genre);
-  params.append('page', page.toString());
-  params.append('limit', limit.toString());
-  const requestUrl = `${API_BASE_URL}/api/beats?${params.toString()}`;
-  const res = await fetch(requestUrl);
-  if (!res.ok) {
-    throw new Error('Network response was not ok');
+const fetchBeats = async (query: string, genre: string, page: number, limit: number): Promise<{beats: BeatWithDetails[], totalCount: number}> => {
+  let queryBuilder = supabase
+    .from('beats')
+    .select(
+      `
+      *,
+      artists(name),
+      beat_tags(tags(name))
+      `,
+      { count: 'exact' }
+    );
+
+  if (query) {
+    queryBuilder = queryBuilder.or(
+      `title.ilike.%${query}%,author.ilike.%${query}%,genre.ilike.%${query}%`
+    );
+    // Note: Filtering by tags in a joined table requires a more complex query or a separate filter.
+    // For now, search focuses on title, author, and genre.
   }
-  return res.json();
+
+  if (genre) {
+    queryBuilder = queryBuilder.eq('genre', genre);
+  }
+
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+  queryBuilder = queryBuilder.range(from, to);
+
+  const { data, error, count } = await queryBuilder;
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const beatsWithDetails: BeatWithDetails[] = data.map((beat: any) => ({
+    ...beat,
+    artist_name: beat.artists?.name || 'Unknown Artist',
+    tags: beat.beat_tags.map((bt: any) => bt.tags?.name).filter(Boolean),
+  }));
+
+  return { beats: beatsWithDetails, totalCount: count || 0 };
 };
 
 const fetchGenres = async (): Promise<string[]> => {
-    const res = await fetch(`${API_BASE_URL}/api/genres`);
-    if (!res.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return res.json();
-  };
+  const { data, error } = await supabase
+    .from('beats')
+    .select('genre')
+    .not('genre', 'is', null)
+    .distinct();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data.map(item => item.genre).filter(Boolean) as string[];
+};
 
 const Beats = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -69,7 +110,7 @@ const Beats = () => {
     if (data?.beats) {
       const playlist = data.beats.map(beat => ({
         ...beat,
-        audioSrc: `${API_BASE_URL}${beat.audio_file_url}`,
+        audioSrc: beat.audio_file_url,
         imageSrc: beat.cover_image_url,
       }));
       playPlaylist(playlist, startIndex);

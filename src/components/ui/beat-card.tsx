@@ -5,20 +5,7 @@ import { PlayCircle, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import API_BASE_URL from '@/lib/api-client';
-
-interface BeatCardProps {
-  id: number;
-  title: string;
-  genre: string;
-  duration: string;
-  price?: string;
-  tags?: string[];
-  imageSrc?: string;
-  author?: string;
-  likes: number;
-  onPlay: () => void; // Expect an onPlay prop
-}
+import { supabase } from '@/lib/supabaseClient';
 
 const BeatCard = (beat: BeatCardProps) => {
   const { id, title, genre, duration, price, tags = [], imageSrc, author, likes, onPlay } = beat;
@@ -35,7 +22,14 @@ const BeatCard = (beat: BeatCardProps) => {
   }, [id]);
 
   const likeMutation = useMutation({
-    mutationFn: () => fetch(`${API_BASE_URL}/api/beats/${id}/like`, { method: 'POST' }),
+    mutationFn: async () => {
+      const { data, error } = await supabase
+        .from('beats')
+        .update({ likes: likeCount + 1 })
+        .eq('id', id);
+      if (error) throw error;
+      return data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['beats'] });
     },
